@@ -37,17 +37,19 @@ export function Hero() {
       {/* ---- Lens stage (z-0) ---- */}
       <LensStage />
 
-      {/* ---- Hero type (z-10, centred, pointer-events: none) ---- */}
+      {/* ---- Hero type (z-10, centred on desktop, upper-anchored on mobile, pointer-events: none) ---- */}
       <div
-        className="hero-type absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none px-6"
-        style={{ mixBlendMode: 'difference' }}
+        className="hero-type absolute inset-0 z-10 flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-28 lg:justify-center lg:pt-0 pointer-events-none px-6"
+        style={{
+          textShadow: '0 2px 30px rgba(8,9,10,0.92), 0 1px 4px rgba(8,9,10,0.85)',
+        }}
       >
         {/* Eyebrow — mono, --bone-dim */}
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-7">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-5 md:mb-7">
           {COPY.hero.eyebrow}
         </p>
 
-        {/* Headline — Instrument Serif, massive */}
+        {/* Headline — Instrument Serif, massive, solid --bone */}
         <h1
           className="font-display text-center text-bone"
           style={{
@@ -65,7 +67,7 @@ export function Hero() {
 
         {/* Subline — Inter Tight, --bone-dim */}
         <p
-          className="font-body text-bone-dim text-center mt-8"
+          className="font-body text-bone-dim text-center mt-6 md:mt-8"
           style={{
             fontSize: '15px',
             lineHeight: 1.5,

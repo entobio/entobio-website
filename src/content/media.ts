@@ -35,7 +35,8 @@ export type MediaSlot = {
    * formats itself). CLAUDE.md §8: AVIF primary, WebP fallback, `src` last.
    * Every path still lives here and nowhere else.
    */
-  sources?: { src: string; type: string }[];
+  sources?: { src: string; type: string; srcSet?: string; sizes?: string }[];
+  lqip?: string;
 };
 
 /* ------------------------------------------------------------------ *
@@ -46,13 +47,24 @@ export type MediaSlot = {
 const GENERATED: MediaSlot[] = [
   {
     // The single highest-priority asset on the site. One file, two <img>.
-    // ARCHITECTURE.md §4 / IMAGE-STRATEGY.md §5.1.
+    // ARCHITECTURE.md §4 / IMAGE-STRATEGY.md §5.1 / REMEDIATION § 4e.
     id: 'HERO-01',
     src: '/media/hero/hero-specimen.png',
     sources: [
-      { src: '/media/hero/hero-specimen.avif', type: 'image/avif' },
-      { src: '/media/hero/hero-specimen.webp', type: 'image/webp' },
+      {
+        src: '/media/hero/hero-specimen.avif',
+        srcSet: '/media/hero/hero-specimen-1080.avif 1080w, /media/hero/hero-specimen.avif 3840w',
+        sizes: '100vw',
+        type: 'image/avif',
+      },
+      {
+        src: '/media/hero/hero-specimen.webp',
+        srcSet: '/media/hero/hero-specimen-1080.webp 1080w, /media/hero/hero-specimen.webp 3840w',
+        sizes: '100vw',
+        type: 'image/webp',
+      },
     ],
+    lqip: 'data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADwBACdASogABIAPzmMvFYvKSYjsBgIAeAnCWcAzNGrwD1fGXYkveTpESCU1XzSUdAA/tn1dezKpgBUdedpGIuOvIISu7Ilj2AsfcqejvQigOAPnfyscMyJ04dMEaXbc5AttK6cherZfgRVKtkAAAAA',
     alt: '',
     source: 'generated',
     w: 3840,
@@ -61,12 +73,12 @@ const GENERATED: MediaSlot[] = [
   },
   {
     id: 'DESCENT-01',
-    src: '/media/descent/descent-01.png',
+    src: null,
     alt: 'the grassland',
     source: 'generated',
     w: 2400,
     h: 1600,
-    required: true,
+    required: false,
   },
   {
     id: 'DESCENT-02',

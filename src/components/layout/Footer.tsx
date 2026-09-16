@@ -61,12 +61,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-20 font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim">
           {/* Column 1: Navigation Links */}
           <div className="flex flex-col space-y-3">
-            <span className="text-bone-faint text-[10px] mb-1">NAVIGATION</span>
+            <span className="text-bone-dim text-[10px] mb-1 font-semibold">NAVIGATION</span>
             <Link href="/#marquee" className="hover:text-bone transition-colors duration-200">
               Catalogue
             </Link>
             <Link href="/services" className="hover:text-bone transition-colors duration-200">
-              Imaging & Services
+              Services
+            </Link>
+            <Link href="/imaging" className="hover:text-bone transition-colors duration-200">
+              Scientific Imaging
+            </Link>
+            <Link href="/publications" className="hover:text-bone transition-colors duration-200">
+              Publications
             </Link>
             <Link href="/outreach" className="hover:text-bone transition-colors duration-200">
               Outreach
@@ -78,7 +84,7 @@ export function Footer() {
 
           {/* Column 2: Locality & Contact */}
           <div className="flex flex-col space-y-3">
-            <span className="text-bone-faint text-[10px] mb-1">LOCATION & CONTACT</span>
+            <span className="text-bone-dim text-[10px] mb-1 font-semibold">LOCATION & CONTACT</span>
             <p className="text-bone/90">
               {SITE.locality}, {SITE.region}, {SITE.country}
             </p>
@@ -92,7 +98,7 @@ export function Footer() {
 
           {/* Column 3: Academic Profiles */}
           <div className="flex flex-col space-y-3">
-            <span className="text-bone-faint text-[10px] mb-1">ACADEMIC PROFILES</span>
+            <span className="text-bone-dim text-[10px] mb-1 font-semibold">ACADEMIC PROFILES</span>
             <a
               href={`https://orcid.org/${SITE.orcid}`}
               target="_blank"
@@ -101,19 +107,34 @@ export function Footer() {
             >
               ORCID: {SITE.orcid}
             </a>
-            <span className="text-bone-dim/60 cursor-default">ResearchGate</span>
-            <span className="text-bone-dim/60 cursor-default">Google Scholar</span>
+            <a
+              href={SITE.researchGate}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-bone transition-colors duration-200"
+            >
+              ResearchGate
+            </a>
+            <a
+              href={SITE.scholar}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-bone transition-colors duration-200"
+            >
+              Google Scholar
+            </a>
           </div>
         </div>
 
-        {/* Credit Line & Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between py-6 border-t border-rule font-mono text-[10px] uppercase tracking-[0.18em] text-bone-faint">
+        {/* Credit Line, Colophon & Copyright */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-6 border-t border-rule font-mono text-[10px] uppercase tracking-[0.18em] text-bone-dim text-center md:text-left">
           <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
+          <p>Typeset in Instrument Serif, Inter Tight &amp; Geist Mono</p>
           <a
             href={SITE.builtBy.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-amber transition-colors duration-200 mt-2 sm:mt-0"
+            className="hover:text-amber transition-colors duration-200"
           >
             SITE BY BUILDROCKET LABS
           </a>
@@ -124,7 +145,7 @@ export function Footer() {
       <div className="w-full overflow-hidden leading-none select-none pointer-events-none flex justify-center -mb-[3vw]">
         <h2
           ref={wordmarkRef}
-          className="font-display text-bone opacity-[0.07] tracking-[-0.04em] whitespace-nowrap will-change-transform"
+          className="font-display text-bone opacity-[0.07] tracking-[-0.04em] whitespace-nowrap"
           style={{
             fontSize: '15vw',
             lineHeight: 0.75,

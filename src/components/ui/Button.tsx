@@ -7,6 +7,7 @@
  */
 
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
+import Link from 'next/link';
 
 type Variant = 'primary' | 'ghost' | 'inverted';
 
@@ -63,6 +64,16 @@ export function Button(props: ButtonProps) {
 
   if ('href' in rest && rest.href) {
     const { href, ...anchorRest } = rest as AsAnchor;
+    const isInternal = href.startsWith('/') || href.startsWith('#');
+
+    if (isInternal) {
+      return (
+        <Link href={href} className={classes} {...anchorRest}>
+          {children}
+        </Link>
+      );
+    }
+
     return (
       <a href={href} className={classes} {...anchorRest}>
         {children}

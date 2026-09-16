@@ -40,6 +40,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/media/hero/hero-specimen-1080.avif"
+          type="image/avif"
+          media="(max-width: 768px)"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/media/hero/hero-specimen.avif"
+          type="image/avif"
+          media="(min-width: 769px)"
+          fetchPriority="high"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

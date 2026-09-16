@@ -1,5 +1,5 @@
 /**
- * Homepage — composes the seven acts.
+ * Homepage — composes the eight acts.
  * ARCHITECTURE.md §1: src/app/page.tsx
  *
  * All pages are static (force-static). — ARCHITECTURE.md §3
@@ -12,7 +12,8 @@ import { SpeciesMarquee } from '@/components/home/SpeciesMarquee';
 import { Manifesto } from '@/components/home/Manifesto';
 import { Capabilities } from '@/components/home/Capabilities';
 import { OutreachBreak } from '@/components/home/OutreachBreak';
-import { RecordContact } from '@/components/home/RecordContact';
+import { TheRecord } from '@/components/home/TheRecord';
+import { ContactSection } from '@/components/home/ContactSection';
 import { Footer } from '@/components/layout/Footer';
 
 export const dynamic = 'force-static';
@@ -29,7 +30,7 @@ export default function HomePage() {
       {/* ACT 2: Descent */}
       <Descent />
 
-      {/* ACT 3: Species Marquee */}
+      {/* ACT 3: Species Marquee ("One hundred and fifty species") */}
       <SpeciesMarquee />
 
       {/* ACT 4: Manifesto */}
@@ -41,8 +42,11 @@ export default function HomePage() {
       {/* ACT 6: Outreach Light Break */}
       <OutreachBreak />
 
-      {/* ACT 7: Record + Contact */}
-      <RecordContact />
+      {/* ACT 7: The Record */}
+      <TheRecord />
+
+      {/* ACT 8: Contact */}
+      <ContactSection />
 
       {/* Footer */}
       <Footer />

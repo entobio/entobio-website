@@ -9,7 +9,7 @@
 
 interface BinomialProps {
   genus: string;
-  species: string;
+  species?: string;
   authority?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -25,13 +25,17 @@ export function Binomial({ genus, species, authority, className, style, stack }:
   return (
     <span className={className} style={style}>
       <i className="font-display italic">
-        {stack ? (
-          <>
-            <span className="block">{genus}</span>
-            <span className="block">{species}</span>
-          </>
+        {species ? (
+          stack ? (
+            <>
+              <span className="block">{genus}</span>
+              <span className="block">{species}</span>
+            </>
+          ) : (
+            <>{genus} {species}</>
+          )
         ) : (
-          <>{genus} {species}</>
+          genus
         )}
       </i>
       {authority && (

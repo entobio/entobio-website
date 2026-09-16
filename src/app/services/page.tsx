@@ -8,6 +8,7 @@ import { SITE } from '@/lib/site';
 import { SERVICES } from '@/content/services';
 import { Button } from '@/components/ui/Button';
 import { Footer } from '@/components/layout/Footer';
+import { breadcrumbSchema } from '@/lib/schema';
 
 export const dynamic = 'force-static';
 
@@ -19,10 +20,21 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-void text-bone pt-28 md:pt-36">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Services', path: '/services' },
+            ])
+          ),
+        }}
+      />
       <div className="max-w-[1560px] mx-auto px-gutter pb-20">
         {/* Page Header */}
         <div className="mb-16 border-b border-rule pb-12">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-4 font-semibold">
             ENTOMOLOGICAL CONSULTING & RESEARCH
           </p>
           <h1
@@ -36,7 +48,7 @@ export default function ServicesPage() {
             Capabilities
           </h1>
           <p className="font-body text-bone-dim text-[16px] max-w-[560px] leading-relaxed">
-            Nine specialized services rooted in two decades of field research, museum collection curation, and scientific publication.
+            Nine specialised services rooted in 16 years of field research, museum collection curation, and scientific publication.
           </p>
         </div>
 
@@ -71,9 +83,20 @@ export default function ServicesPage() {
                   <p className="font-body text-bone-dim text-[15px] leading-relaxed mb-6 max-w-[480px]">
                     {service.line}
                   </p>
-                  <Button variant="ghost" href="/contact">
-                    Enquire for Service {service.n}
-                  </Button>
+                  {service.n === '03' ? (
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Button variant="primary" href="/imaging">
+                        Explore Imaging Lab →
+                      </Button>
+                      <Button variant="ghost" href="/contact">
+                        Enquire for Service 03
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button variant="ghost" href="/contact">
+                      Enquire for Service {service.n}
+                    </Button>
+                  )}
                 </div>
               </div>
             );

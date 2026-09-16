@@ -4,8 +4,9 @@
  */
 
 import type { Metadata } from 'next';
-import { RecordContact } from '@/components/home/RecordContact';
+import { ContactSection } from '@/components/home/ContactSection';
 import { Footer } from '@/components/layout/Footer';
+import { breadcrumbSchema } from '@/lib/schema';
 
 export const dynamic = 'force-static';
 
@@ -17,8 +18,19 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-void text-bone pt-28 md:pt-36">
-      <div className="max-w-[1560px] mx-auto px-gutter pb-12">
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Contact', path: '/contact' },
+            ])
+          ),
+        }}
+      />
+      <div className="max-w-[1560px] mx-auto px-gutter pb-6">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4 font-semibold">
           INSECT IDENTIFICATION & RESEARCH ENQUIRIES
         </p>
         <h1
@@ -33,8 +45,8 @@ export default function ContactPage() {
         </h1>
       </div>
 
-      {/* Reuse RecordContact component's Contact Form block */}
-      <RecordContact />
+      {/* Standalone Contact Form block */}
+      <ContactSection />
 
       <Footer />
     </main>

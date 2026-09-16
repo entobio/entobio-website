@@ -96,7 +96,7 @@ export default async function Image() {
           }}
         >
           <span>{SITE.founder}, Ph.D., FRES</span>
-          <span>150+ TAXA DESCRIBED · 36 PAPERS</span>
+          <span>150 SPECIES DESCRIBED · 36 PAPERS</span>
         </div>
       </div>
     ),

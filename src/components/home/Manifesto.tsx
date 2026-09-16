@@ -6,20 +6,35 @@
  * Faint, slowly rotating wing-venation macro at opacity: 0.06, blur: 2px, rotating 0 → 8deg.
  * Four lines enter and exit with focus-rack idiom (blur 10 → 0 → 10).
  * Final amber line lands and stays ("And almost nobody can still do it.").
+ *
+ * Progressive Enhancement:
+ * Defaults to readable static flow stack. If GSAP fails or under prefers-reduced-motion,
+ * renders as a clean vertical stack in flow — never an empty black void or collapsed stack.
  */
 
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import { resolveSrc } from '@/lib/media';
 import { gsap, EASE } from '@/lib/gsap';
 import { useGsapContext } from '@/hooks/useScrollTrigger';
 import { COPY } from '@/content/copy';
 
-function prefersReducedMotion(): boolean {
+function subscribeReducedMotion(callback: () => void) {
+  if (typeof window === 'undefined') return () => {};
+  const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+  mql.addEventListener('change', callback);
+  return () => mql.removeEventListener('change', callback);
+}
+
+function getReducedMotionSnapshot(): boolean {
   if (typeof window === 'undefined') return false;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function getReducedMotionServerSnapshot(): boolean {
+  return false;
 }
 
 /**
@@ -33,30 +48,38 @@ export function Manifesto() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
   const lineRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+
+  const isReduced = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  );
 
   const allLines = [...COPY.manifesto.lines, COPY.manifesto.finalLine];
 
   useGsapContext(() => {
-    if (!containerRef.current || !pinRef.current) return;
+    if (!containerRef.current || !pinRef.current || isReduced) return;
 
-    const reduced = prefersReducedMotion();
-
-    // Reduced motion fallback: unpinned static layout
-    if (reduced) {
-      gsap.set(pinRef.current, { position: 'relative', height: 'auto', padding: '120px 40px' });
-      lineRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const isFinal = i === allLines.length - 1;
-        gsap.set(el, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          color: isFinal ? '#D89A3E' : '#F2EDE3',
-        });
-      });
-      return;
+    // Progressive Enhancement: transform static stack into pinned scrub
+    gsap.set(containerRef.current, { height: '300vh', padding: 0 });
+    gsap.set(pinRef.current, {
+      height: '100vh',
+      overflow: 'hidden',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    });
+    if (textContainerRef.current) {
+      gsap.set(textContainerRef.current, { minHeight: '300px' });
     }
+
+    // Set lines to absolute for focus-rack scrub
+    lineRefs.current.forEach((el) => {
+      if (!el) return;
+      gsap.set(el, { position: 'absolute', y: 30, opacity: 0, filter: 'blur(10px)' });
+    });
 
     // Wing venation background rotation (0 → 8deg across 300vh scrub)
     if (bgImageRef.current) {
@@ -76,7 +99,7 @@ export function Manifesto() {
       );
     }
 
-    // Pinned Timeline for the 5 manifesto lines
+    // Pinned Timeline for the 5 manifesto lines (NO CSS sticky — ScrollTrigger pin alone)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -129,17 +152,46 @@ export function Manifesto() {
     });
   }, containerRef);
 
+  // If reduced motion is requested, render clean vertical stack in flow
+  if (isReduced) {
+    return (
+      <section
+        id="manifesto"
+        className="relative w-full bg-void py-24 md:py-32"
+      >
+        <div className="max-w-[1000px] mx-auto px-gutter flex flex-col gap-10 md:gap-14 text-center items-center">
+          {allLines.map((line, i) => {
+            const isFinal = i === allLines.length - 1;
+            return (
+              <p
+                key={i}
+                className={`font-display text-center leading-[1.05] tracking-[-0.03em] ${
+                  isFinal ? 'text-amber font-semibold' : 'text-bone'
+                }`}
+                style={{
+                  fontSize: 'var(--t-section)',
+                  maxWidth: '900px',
+                }}
+              >
+                {line}
+              </p>
+            );
+          })}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       ref={containerRef}
       id="manifesto"
-      className="relative w-full bg-void"
-      style={{ height: '300vh' }}
+      className="relative w-full bg-void py-24 md:py-32"
     >
-      {/* Pinned Viewport Container */}
+      {/* Pinned Viewport Container (NO CSS sticky — ScrollTrigger pin alone) */}
       <div
         ref={pinRef}
-        className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-void flex items-center justify-center"
+        className="w-full h-full overflow-hidden bg-void flex items-center justify-center"
       >
         {/* Background Wing-Venation Macro Image (opacity: 0.06, blur: 2px, rotating 0→8deg) */}
         <div
@@ -157,8 +209,11 @@ export function Manifesto() {
           )}
         </div>
 
-        {/* Centered Manifesto Lines */}
-        <div className="relative z-10 max-w-[1200px] w-full px-gutter text-center flex flex-col items-center justify-center min-h-[300px]">
+        {/* Centered Manifesto Lines — defaults to static vertical flow stack */}
+        <div
+          ref={textContainerRef}
+          className="relative z-10 max-w-[1200px] w-full px-gutter text-center flex flex-col items-center justify-center gap-10 md:gap-14"
+        >
           {allLines.map((line, i) => {
             const isFinal = i === allLines.length - 1;
 
@@ -168,7 +223,7 @@ export function Manifesto() {
                 ref={(el) => {
                   lineRefs.current[i] = el;
                 }}
-                className={`font-display absolute text-center leading-[0.92] tracking-[-0.03em] ${
+                className={`font-display text-center leading-[1.05] tracking-[-0.03em] ${
                   isFinal ? 'text-amber font-semibold' : 'text-bone'
                 }`}
                 style={{

@@ -18,4 +18,20 @@ of the Museum and Collection Facility at NCBS-TIFR.
 ORCID: 0000-0002-5104-3401
 Contact: contact@entobioconsult.com
 Location: Bengaluru, Karnataka, India
-Serves: worldwide
+Consulting: Worldwide
+Physical specimen imaging intake: Indian institutions only (universities, museums, ICAR institutes, research labs)
+
+## Dedicated Scientific Imaging Lab (/imaging)
+EntoBio Consult operates a specialised optical macro and micro imaging laboratory in Bengaluru, delivering publication-grade focus-stacked imagery, type specimen documentation, and collection digitisation.
+
+Imaging Services:
+1. Single Specimen Imaging — Focus-stacked macro and micro plates of individual specimens (insects, arthropods, botanical material).
+2. Type Specimen Documentation — Diagnostic imaging of holotypes, paratypes, and voucher material, including dorsal, lateral, and genitalic dissections.
+3. Collection Digitisation — Batch imaging of museum drawers, unit trays, teaching sets, and reference collections.
+4. Slide & Microscope Preparation Imaging — Transmitted light, brightfield, and phase imaging of slide preparations.
+5. Comparative Plates — Multi-specimen plates composed and scaled to journal specifications.
+6. Custom Documentation — Imaging workflows tailored to non-standard research questions.
+
+Scope & Specimen Intake:
+Specimens accepted strictly from Indian domestic institutions (dry-mounted, slide-mounted, alcohol-preserved). Due to biological permit and transfer complexities, international specimen intake is not available.
+

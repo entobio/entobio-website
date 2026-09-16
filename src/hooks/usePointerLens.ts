@@ -1,20 +1,21 @@
 /**
  * src/hooks/usePointerLens.ts
- * Owns the SINGLE rAF loop for the hero lens.
- * Writes CSS custom properties directly on document.documentElement.
- * — ARCHITECTURE.md §2.4, HOMEPAGE-BUILD-SPEC §3.2–3.4
+ * Owns the SINGLE consolidated animation loop for the hero lens.
+ * Driven by the GSAP ticker, paused by IntersectionObserver when #hero leaves the viewport.
+ * Directly updates CSS custom properties and LensStage SVG graticule elements in one unified frame.
+ * — ARCHITECTURE.md §2.4, HOMEPAGE-BUILD-SPEC §3.2–3.4, REMEDIATION § 3e, 4b, 4d
  *
  * Writes: --lens-x, --lens-y, --lens-r, --lens-r-px, --drift-x, --drift-y
  * Desktop: lerped pointer follow, FOLLOW = 0.09
- * Touch: autonomous Lissajous orbit, 14s period
+ * Touch / Mobile: autonomous Lissajous orbit constrained to lower viewing zone
  * Reduced motion: locks centre at 45% opacity, exits loop
- * Pauses loop via IntersectionObserver when #hero leaves viewport
+ * Pauses ticker via IntersectionObserver when #hero leaves viewport
  */
 
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import { lerp, FOLLOW } from '@/lib/gsap';
+import { gsap, lerp, FOLLOW } from '@/lib/gsap';
 
 /* ---- Radius in px (computed at init) ---- */
 
@@ -34,16 +35,144 @@ const R_MOBILE = { min: 120, vw: 34, max: 200 };
 /** Lissajous orbit parameters — HOMEPAGE-BUILD-SPEC §3.4 */
 const LISSAJOUS_FREQ_X = 0.42;
 const LISSAJOUS_FREQ_Y = 0.61;
-const LISSAJOUS_AMP_X = 0.30;
-const LISSAJOUS_AMP_Y = 0.22;
 
 /** Parallax drift multipliers — HOMEPAGE-BUILD-SPEC §3.2 */
 const DRIFT_X_FACTOR = -18;
 const DRIFT_Y_FACTOR = -12;
 
+/** Ring crosshair geometry */
+const TICK_LENGTH = 14;
+const TICK_INSET = 8;
+
+interface LensDomElements {
+  ic: SVGCircleElement | null;
+  og: SVGGElement | null;
+  oc: SVGCircleElement | null;
+  crosshairH: SVGLineElement | null;
+  crosshairV: SVGLineElement | null;
+  centerRing: SVGCircleElement | null;
+  graticuleTicks: SVGGElement | null;
+  tN: SVGLineElement | null;
+  tS: SVGLineElement | null;
+  tE: SVGLineElement | null;
+  tW: SVGLineElement | null;
+  rd: HTMLElement | null;
+  cd: HTMLElement | null;
+}
+
+function getLensDomElements(): LensDomElements {
+  return {
+    ic: document.getElementById('lens-inner-circle') as SVGCircleElement | null,
+    og: document.getElementById('lens-outer-g') as SVGGElement | null,
+    oc: document.getElementById('lens-outer-circle') as SVGCircleElement | null,
+    crosshairH: document.getElementById('lens-crosshair-h') as SVGLineElement | null,
+    crosshairV: document.getElementById('lens-crosshair-v') as SVGLineElement | null,
+    centerRing: document.getElementById('lens-center-ring') as SVGCircleElement | null,
+    graticuleTicks: document.getElementById('lens-graticule-ticks') as SVGGElement | null,
+    tN: document.getElementById('lens-tick-n') as SVGLineElement | null,
+    tS: document.getElementById('lens-tick-s') as SVGLineElement | null,
+    tE: document.getElementById('lens-tick-e') as SVGLineElement | null,
+    tW: document.getElementById('lens-tick-w') as SVGLineElement | null,
+    rd: document.getElementById('lens-readout'),
+    cd: document.getElementById('lens-coords'),
+  };
+}
+
+function updateLensDom(dom: LensDomElements, x: number, y: number, r: number) {
+  if (dom.ic) {
+    dom.ic.setAttribute('cx', String(x));
+    dom.ic.setAttribute('cy', String(y));
+    dom.ic.setAttribute('r', String(r));
+  }
+
+  if (dom.og) {
+    dom.og.style.transformOrigin = `${x}px ${y}px`;
+  }
+
+  if (dom.oc) {
+    dom.oc.setAttribute('cx', String(x));
+    dom.oc.setAttribute('cy', String(y));
+    dom.oc.setAttribute('r', String(r + 12));
+  }
+
+  // Calibrated graticule full crosshairs
+  if (dom.crosshairH) {
+    dom.crosshairH.setAttribute('x1', String(x - r));
+    dom.crosshairH.setAttribute('y1', String(y));
+    dom.crosshairH.setAttribute('x2', String(x + r));
+    dom.crosshairH.setAttribute('y2', String(y));
+  }
+
+  if (dom.crosshairV) {
+    dom.crosshairV.setAttribute('x1', String(x));
+    dom.crosshairV.setAttribute('y1', String(y - r));
+    dom.crosshairV.setAttribute('x2', String(x));
+    dom.crosshairV.setAttribute('y2', String(y + r));
+  }
+
+  // Center target reticle
+  if (dom.centerRing) {
+    dom.centerRing.setAttribute('cx', String(x));
+    dom.centerRing.setAttribute('cy', String(y));
+  }
+
+  // Precision axis ticks
+  if (dom.graticuleTicks) {
+    dom.graticuleTicks.setAttribute('transform', `translate(${x}, ${y})`);
+  }
+
+  // Outer boundary ticks
+  if (dom.tN) {
+    dom.tN.setAttribute('x1', String(x));
+    dom.tN.setAttribute('y1', String(y - r + TICK_INSET));
+    dom.tN.setAttribute('x2', String(x));
+    dom.tN.setAttribute('y2', String(y - r + TICK_INSET + TICK_LENGTH));
+  }
+
+  if (dom.tS) {
+    dom.tS.setAttribute('x1', String(x));
+    dom.tS.setAttribute('y1', String(y + r - TICK_INSET - TICK_LENGTH));
+    dom.tS.setAttribute('x2', String(x));
+    dom.tS.setAttribute('y2', String(y + r - TICK_INSET));
+  }
+
+  if (dom.tE) {
+    dom.tE.setAttribute('x1', String(x + r - TICK_INSET - TICK_LENGTH));
+    dom.tE.setAttribute('y1', String(y));
+    dom.tE.setAttribute('x2', String(x + r - TICK_INSET));
+    dom.tE.setAttribute('y2', String(y));
+  }
+
+  if (dom.tW) {
+    dom.tW.setAttribute('x1', String(x - r + TICK_INSET));
+    dom.tW.setAttribute('y1', String(y));
+    dom.tW.setAttribute('x2', String(x - r + TICK_INSET + TICK_LENGTH));
+    dom.tW.setAttribute('y2', String(y));
+  }
+
+  // Coordinate readout — positioned clear of hero type per spec 4b & 4d
+  if (dom.rd) {
+    if (window.innerWidth < 1024) {
+      // Mobile: position directly above the lens top rim, centered with lens and clamped in viewport
+      const rx = Math.max(16, Math.min(x - 65, window.innerWidth - 150));
+      const ry = y - r - 26;
+      dom.rd.style.transform = `translate(${rx}px, ${ry}px)`;
+    } else {
+      // Desktop: positioned bottom-right of the ring, shifted clear of the central headline type
+      const rx = Math.min(x + r * 0.707 + 34, window.innerWidth - 160);
+      const ry = Math.min(y + r * 0.707 + 16, window.innerHeight - 80);
+      dom.rd.style.transform = `translate(${rx}px, ${ry}px)`;
+    }
+  }
+
+  if (dom.cd) {
+    dom.cd.textContent = `X ${x.toFixed(1)}   Y ${y.toFixed(1)}`;
+  }
+}
+
 function isTouchDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  return window.matchMedia('(pointer: coarse)').matches;
+  return window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024;
 }
 
 function prefersReducedMotion(): boolean {
@@ -64,18 +193,31 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
   const radiusCurrent = useRef(200);
   const radiusTarget = useRef(200);
 
-  // rAF handle
-  const rafId = useRef<number>(0);
-
-  // Visibility flag — pause when hero leaves viewport
-  const isVisible = useRef(true);
+  // Ticker active state
+  const isTickerActive = useRef(false);
 
   // Touch detection
   const isTouch = useRef(false);
 
   // Lissajous time accumulator
   const lissajousT = useRef(0);
-  const lastFrameTime = useRef(0);
+
+  // DOM elements cache for direct mutation
+  const domRefs = useRef<LensDomElements>({
+    ic: null,
+    og: null,
+    oc: null,
+    crosshairH: null,
+    crosshairV: null,
+    centerRing: null,
+    graticuleTicks: null,
+    tN: null,
+    tS: null,
+    tE: null,
+    tW: null,
+    rd: null,
+    cd: null,
+  });
 
   const root = typeof document !== 'undefined' ? document.documentElement : null;
 
@@ -94,9 +236,10 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
     isTouch.current = isTouchDevice();
     const reduced = prefersReducedMotion();
 
-    // Initial centre
+    const isMobileView = window.innerWidth < 1024;
+    // Initial centre — on mobile, place in lower viewing window to avoid headline collision
     const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
+    const cy = isMobileView ? window.innerHeight * 0.68 : window.innerHeight / 2;
 
     lensX.current = cx;
     lensY.current = cy;
@@ -104,7 +247,7 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
     targetY.current = cy;
 
     // Compute initial radius in px
-    const rParams = isTouch.current ? R_MOBILE : R_DEFAULT;
+    const rParams = isTouch.current || isMobileView ? R_MOBILE : R_DEFAULT;
     const initialR = computeClamp(rParams.min, rParams.vw, rParams.max);
     radiusCurrent.current = initialR;
     radiusTarget.current = initialR;
@@ -117,16 +260,42 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
     setVar('--drift-x', '0px');
     setVar('--drift-y', '0px');
 
+    domRefs.current = getLensDomElements();
+    updateLensDom(domRefs.current, cx, cy, initialR);
+
     /* ---- Reduced motion: lock centre, exit ---- */
     if (reduced) {
       return; // No loop — CSS handles the static state
     }
 
+    const handleResize = () => {
+      isTouch.current = isTouchDevice();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const mobile = w < 1024 || isTouch.current;
+      const rp = mobile ? R_MOBILE : R_DEFAULT;
+      const rPx = computeClamp(rp.min, rp.vw, rp.max);
+      radiusTarget.current = rPx;
+      if (mobile) {
+        targetX.current = w / 2;
+        targetY.current = h * 0.68;
+      }
+    };
+    window.addEventListener('resize', handleResize);
+
     /* ---- Pointer handlers (desktop) ---- */
     const handlePointerMove = (e: PointerEvent) => {
       if (isTouch.current) return;
       targetX.current = e.clientX;
-      targetY.current = e.clientY;
+
+      if (window.innerWidth < 1024) {
+        // Constrain lens travel below 1024px so it never collides with upper-anchored headline
+        const minY = window.innerHeight * 0.52;
+        const maxY = window.innerHeight * 0.80;
+        targetY.current = Math.min(Math.max(e.clientY, minY), maxY);
+      } else {
+        targetY.current = e.clientY;
+      }
     };
 
     const handlePointerDown = () => {
@@ -147,43 +316,28 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
     hero.addEventListener('pointerup', handlePointerUp);
     hero.addEventListener('pointerleave', handlePointerUp);
 
-    /* ---- IntersectionObserver — pause when hero leaves viewport ---- */
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible.current = entry.isIntersecting;
-        if (entry.isIntersecting && !rafId.current) {
-          lastFrameTime.current = performance.now();
-          rafId.current = requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(hero);
-
-    /* ---- The rAF loop ---- */
-    lastFrameTime.current = performance.now();
-
     // Radius lerp factor — slower than position for smooth feel
     const RADIUS_LERP = 0.06;
 
-    function tick(now: number) {
-      if (!isVisible.current) {
-        rafId.current = 0;
-        return;
-      }
+    /* ---- The unified GSAP ticker loop ---- */
+    function tick(_time: number, deltaTime: number) {
+      const dt = (deltaTime || 16.66) / 1000;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const isMobileScreen = w < 1024;
 
-      const dt = (now - lastFrameTime.current) / 1000;
-      lastFrameTime.current = now;
-
-      if (isTouch.current) {
+      if (isTouch.current || isMobileScreen) {
         // Autonomous Lissajous orbit — HOMEPAGE-BUILD-SPEC §3.4
         lissajousT.current += dt;
         const t = lissajousT.current;
-        const w = window.innerWidth;
-        const h = window.innerHeight;
 
-        targetX.current = w / 2 + Math.sin(t * LISSAJOUS_FREQ_X) * w * LISSAJOUS_AMP_X;
-        targetY.current = h / 2 + Math.sin(t * LISSAJOUS_FREQ_Y) * h * LISSAJOUS_AMP_Y;
+        const orbitCx = w / 2;
+        const orbitCy = h * 0.68;
+        const ampX = 0.22;
+        const ampY = 0.05;
+
+        targetX.current = orbitCx + Math.sin(t * LISSAJOUS_FREQ_X) * w * ampX;
+        targetY.current = orbitCy + Math.sin(t * LISSAJOUS_FREQ_Y) * h * ampY;
       }
 
       // Lerp position toward target
@@ -209,19 +363,41 @@ export function usePointerLens(heroRef: React.RefObject<HTMLElement | null>) {
       setVar('--drift-x', `${(dx * DRIFT_X_FACTOR).toFixed(1)}px`);
       setVar('--drift-y', `${(dy * DRIFT_Y_FACTOR).toFixed(1)}px`);
 
-      rafId.current = requestAnimationFrame(tick);
+      // Update LensStage SVG graticule elements and readout in the exact same frame
+      if (!domRefs.current.ic || !domRefs.current.crosshairH) {
+        domRefs.current = getLensDomElements();
+      }
+      updateLensDom(domRefs.current, lx, ly, lr);
     }
 
-    rafId.current = requestAnimationFrame(tick);
+    /* ---- IntersectionObserver — pause GSAP ticker when hero leaves viewport ---- */
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const intersecting = entry.isIntersecting;
+        if (intersecting && !isTickerActive.current) {
+          gsap.ticker.add(tick);
+          isTickerActive.current = true;
+        } else if (!intersecting && isTickerActive.current) {
+          gsap.ticker.remove(tick);
+          isTickerActive.current = false;
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(hero);
 
     /* ---- Cleanup ---- */
     return () => {
-      if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (isTickerActive.current) {
+        gsap.ticker.remove(tick);
+        isTickerActive.current = false;
+      }
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
       hero.removeEventListener('pointermove', handlePointerMove);
       hero.removeEventListener('pointerdown', handlePointerDown);
       hero.removeEventListener('pointerup', handlePointerUp);
       hero.removeEventListener('pointerleave', handlePointerUp);
-      observer.disconnect();
 
       root.style.removeProperty('--lens-x');
       root.style.removeProperty('--lens-y');

@@ -39,7 +39,7 @@ export const COPY = {
 
   /** Species Marquee header — CONTENT.md §7 [V] */
   marquee: {
-    index: '02 — THE RECORD',
+    index: '03 — ONE HUNDRED AND FIFTY',
     headline: ['One hundred and', 'fifty species.'],
     body: [
       'Each one named, described and deposited.',
@@ -57,7 +57,7 @@ export const COPY = {
   /** Outreach — CONTENT.md §9 [V] */
   outreach: {
     headline: 'Free biodiversity programmes for government schools.',
-    body: 'Insect exhibitions with live and preserved specimens, entomophilately and scientific art. Teacher training and educational resources. Field visits, nature walks and citizen science \u2014 offered free to government schools, with a focus on rural Karnataka.',
+    body: 'Insect exhibitions with live and preserved specimens, entomophilately and scientific art. Teacher training and educational resources. Field visits, nature walks and citizen science. Offered free to government schools, with a focus on rural Karnataka.',
     cta: 'Request a session',
   },
 
@@ -84,9 +84,9 @@ export const COPY = {
     title: 'Ph.D., FRES',
     role: 'Founder and Principal Consultant, EntoBio Consult.',
     bio: [
-      'Ph.D. in Agricultural Entomology (Taxonomy), UAS GKVK, 2014 \u2014 dissertation on the Mirid Bugs (Hemiptera: Miridae) of South India.',
+      'Ph.D. in Agricultural Entomology (Taxonomy), UAS GKVK, 2014. Dissertation on the Mirid Bugs (Hemiptera: Miridae) of South India.',
       'Scientist In-charge and Curator of the Museum and Collection Facility at the National Centre for Biological Sciences, TIFR (2022\u20132024). Assistant Professor and Curator, Department of Entomology, UAS GKVK (2017\u20132022). Research Associate, ICAR Network Project on Insect Biosystematics.',
-      'Fellow of the Royal Entomological Society, London. Twice awarded the Ernst Mayr Travel Grant by the Museum of Comparative Zoology, Harvard University \u2014 to the Natural History Museum, London in 2016, and the Smithsonian National Museum of Natural History, Washington DC in 2024.',
+      'Fellow of the Royal Entomological Society, London. Twice awarded the Ernst Mayr Travel Grant by the Museum of Comparative Zoology, Harvard University (Natural History Museum, London in 2016, and the Smithsonian National Museum of Natural History, Washington DC in 2024).',
       'Co-editor of Indian Insects: Diversity and Science (CRC Press, 2019).',
       'Field surveys across South India, the North-Eastern Hill regions, and the Andaman & Nicobar Islands, continuously since 2009.',
     ] as const,

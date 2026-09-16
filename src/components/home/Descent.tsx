@@ -14,23 +14,30 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import { gsap } from '@/lib/gsap';
 import { useGsapContext } from '@/hooks/useScrollTrigger';
 import { COPY } from '@/content/copy';
 import { DESCENT_SLOT_IDS } from '@/content/media';
 import { getSlot } from '@/lib/media';
-import { Binomial } from '@/components/ui/Binomial';
 
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-function isMobileViewport(): boolean {
-  if (typeof window === 'undefined') return false;
+function subscribeWindow(callback: () => void) {
+  window.addEventListener('resize', callback, { passive: true });
+  return () => window.removeEventListener('resize', callback);
+}
+
+function getMobileSnapshot() {
   return window.innerWidth < 640;
+}
+
+function getMobileServerSnapshot() {
+  return false;
 }
 
 /**
@@ -59,13 +66,11 @@ export function Descent() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [prefetchLateLayers, setPrefetchLateLayers] = useState(false);
-  const [isMobile, setIsMobile] = useState(isMobileViewport);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(isMobileViewport());
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const isMobile = useSyncExternalStore(
+    subscribeWindow,
+    getMobileSnapshot,
+    getMobileServerSnapshot
+  );
 
   useGsapContext(() => {
     if (!containerRef.current || !pinRef.current) return;
@@ -99,6 +104,26 @@ export function Descent() {
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1.1,
+        onEnter: () => {
+          layerRefs.current.forEach((el) => {
+            if (el) el.style.willChange = 'transform, opacity';
+          });
+        },
+        onLeave: () => {
+          layerRefs.current.forEach((el) => {
+            if (el) el.style.willChange = 'auto';
+          });
+        },
+        onEnterBack: () => {
+          layerRefs.current.forEach((el) => {
+            if (el) el.style.willChange = 'transform, opacity';
+          });
+        },
+        onLeaveBack: () => {
+          layerRefs.current.forEach((el) => {
+            if (el) el.style.willChange = 'auto';
+          });
+        },
         onUpdate: (self) => {
           const progress = self.progress;
 
@@ -144,9 +169,6 @@ export function Descent() {
 
       const startTime = i * stepDuration;
       const fadeOutDuration = 0.06;
-
-      // Set initial will-change
-      el.style.willChange = 'transform, opacity';
 
       tl.fromTo(
         el,
@@ -209,7 +231,7 @@ export function Descent() {
       {/* Pinned Viewport Container */}
       <div
         ref={pinRef}
-        className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-void"
+        className="w-full h-screen overflow-hidden bg-void"
       >
         {/* Four Stacked Layers */}
         {activeScales.map((img, i) => {
@@ -279,15 +301,6 @@ export function Descent() {
           >
             {COPY.descent.finalLine}
           </h2>
-
-          <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim bg-void/70 backdrop-blur-xs px-4 py-2 rounded-[2px] border border-rule">
-            <Binomial
-              genus="Hypseloecus"
-              species="sandalum"
-              authority="YESHWANTH, 2014"
-            />
-            <span className="ml-3 text-bone-faint">· 2.4 MM</span>
-          </div>
         </div>
       </div>
     </section>

@@ -8,25 +8,37 @@ import { SITE } from '@/lib/site';
 import { COPY } from '@/content/copy';
 import { INSTITUTIONS, HONOURS } from '@/content/credentials';
 import { Footer } from '@/components/layout/Footer';
+import { breadcrumbSchema } from '@/lib/schema';
 
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: `About ${SITE.founder}`,
+  title: 'About Founder & Credentials',
   description: `${SITE.founder} — Founder and Principal Consultant, ${SITE.name}. Fellow of the Royal Entomological Society, London.`,
 };
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-void text-bone pt-28 md:pt-36">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'About', path: '/about' },
+            ])
+          ),
+        }}
+      />
       <div className="max-w-[1560px] mx-auto px-gutter pb-20">
         {/* Header */}
-        <div className="mb-16">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-4">
-            FOUNDER & PRINCIPAL CONSULTANT
+        <div className="mb-16 border-b border-rule pb-12">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4 font-semibold">
+            BIOGRAPHY & EXPERTISE
           </p>
           <h1
-            className="font-display text-bone"
+            className="font-display text-bone mb-4"
             style={{
               fontSize: 'var(--t-display)',
               lineHeight: 0.88,
@@ -35,7 +47,7 @@ export default function AboutPage() {
           >
             {COPY.founder.name}
           </h1>
-          <p className="font-mono text-[13px] text-amber uppercase tracking-[0.18em] mt-3">
+          <p className="font-mono text-[13px] uppercase tracking-[0.14em] text-bone-dim">
             {COPY.founder.title} — {COPY.founder.role}
           </p>
         </div>
@@ -51,7 +63,7 @@ export default function AboutPage() {
           {/* Key Facts / Monograph Accent Card */}
           <div className="lg:col-span-5 border border-rule bg-carbon/60 p-8 rounded-[2px] space-y-8">
             <div>
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-faint mb-4">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim font-semibold mb-4">
                 AFFILIATIONS & PAST ROLES
               </h3>
               <ul className="space-y-2 font-mono text-[12px] text-bone">
@@ -62,7 +74,7 @@ export default function AboutPage() {
             </div>
 
             <div className="border-t border-rule pt-6">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-faint mb-4">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim font-semibold mb-4">
                 DISTINCTIONS
               </h3>
               <ul className="space-y-2 font-mono text-[12px] text-bone">

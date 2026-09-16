@@ -18,8 +18,9 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { gsap, EASE } from '@/lib/gsap';
+import { Binomial } from '@/components/ui/Binomial';
 
 const SESSION_STORAGE_KEY = 'entobio_preloader_seen';
 
@@ -42,46 +43,44 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-function checkInitialPreloaderStatus(): { shouldRender: boolean; isDone: boolean } {
-  const storageAvailable = isSessionStorageAvailable();
-  const reducedMotion = prefersReducedMotion();
+const emptySubscribe = () => () => {};
 
-  if (storageAvailable) {
-    try {
-      const seen = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
-      if (seen === 'true') {
-        return { shouldRender: false, isDone: true };
-      }
-    } catch {
-      // Fail silently
-    }
+function getPreloaderSnapshot(): boolean {
+  if (prefersReducedMotion()) return true;
+  if (!isSessionStorageAvailable()) return false;
+  try {
+    return window.sessionStorage.getItem(SESSION_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
   }
+}
 
-  if (reducedMotion) {
-    if (storageAvailable) {
-      try {
-        window.sessionStorage.setItem(SESSION_STORAGE_KEY, 'true');
-      } catch {
-        // Fail silently
-      }
-    }
-    return { shouldRender: false, isDone: true };
-  }
-
-  return { shouldRender: true, isDone: false };
+function getPreloaderServerSnapshot(): boolean {
+  return false;
 }
 
 export function Preloader() {
-  const [{ shouldRender, isDone }, setPreloaderStatus] = useState(checkInitialPreloaderStatus);
+  const isSeenInStorage = useSyncExternalStore(
+    emptySubscribe,
+    getPreloaderSnapshot,
+    getPreloaderServerSnapshot
+  );
+  const [isAnimationDone, setIsAnimationDone] = useState(false);
+  const isDone = isSeenInStorage || isAnimationDone;
+  const shouldRender = !isDone;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const graticuleRef = useRef<SVGSVGElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
+  const defaultLabelRef = useRef<HTMLSpanElement>(null);
+  const speciesLabelRef = useRef<HTMLSpanElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!shouldRender || isDone || !containerRef.current) return;
+
+    const sharedParent = containerRef.current.closest('main') ?? document.body;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -93,7 +92,7 @@ export function Preloader() {
               // Fail silently
             }
           }
-          setPreloaderStatus({ shouldRender: false, isDone: true });
+          setIsAnimationDone(true);
         },
       });
 
@@ -153,24 +152,20 @@ export function Preloader() {
         0.3
       );
 
-      // 1.7 – 1.9s: counter holds; label swaps to species name, italic serif
+      // 1.7 – 1.9s: counter holds; label swaps to species name, italic serif via Binomial
       tl.to(
-        labelRef.current,
+        defaultLabelRef.current,
         {
           opacity: 0,
           y: -4,
           duration: 0.1,
-          onComplete: () => {
-            if (labelRef.current) {
-              labelRef.current.innerHTML = '<i class="font-display italic text-[15px] text-bone">Hypseloecus sandalum</i>';
-            }
-          },
         },
         1.7
       );
 
-      tl.to(
-        labelRef.current,
+      tl.fromTo(
+        speciesLabelRef.current,
+        { opacity: 0, y: 4 },
         { opacity: 1, y: 0, duration: 0.1 },
         1.8
       );
@@ -195,7 +190,7 @@ export function Preloader() {
         { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, ease: EASE.out },
         1.9
       );
-    }, containerRef);
+    }, sharedParent);
 
     return () => ctx.revert();
   }, [shouldRender, isDone]);
@@ -210,10 +205,12 @@ export function Preloader() {
   const ticks = Array.from({ length: tickCount }).map((_, i) => {
     const angle = (i * 360) / tickCount;
     const rad = (angle * Math.PI) / 180;
-    const x1 = 200 + Math.cos(rad) * radius;
-    const y1 = 200 + Math.sin(rad) * radius;
-    const x2 = 200 + Math.cos(rad) * (radius + 8);
-    const y2 = 200 + Math.sin(rad) * (radius + 8);
+    const cos = Math.cos(rad);
+    const sin = Math.sin(rad);
+    const x1 = Math.round((200 + cos * radius) * 100) / 100;
+    const y1 = Math.round((200 + sin * radius) * 100) / 100;
+    const x2 = Math.round((200 + cos * (radius + 8)) * 100) / 100;
+    const y2 = Math.round((200 + sin * (radius + 8)) * 100) / 100;
     return { x1, y1, x2, y2, key: i };
   });
 
@@ -288,9 +285,21 @@ export function Preloader() {
         {/* Subline / Species label */}
         <div
           ref={labelRef}
-          className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-bone-faint h-6 flex items-center justify-center"
+          className="mt-3 font-mono text-[11px] tracking-[0.18em] text-bone-faint h-6 flex items-center justify-center relative"
         >
-          RESOLVING SPECIMEN
+          <span ref={defaultLabelRef} className="uppercase">
+            RESOLVING SPECIMEN
+          </span>
+          <span
+            ref={speciesLabelRef}
+            className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none"
+          >
+            <Binomial
+              genus="Hypseloecus"
+              species="sandalum"
+              className="text-[15px] text-bone font-normal"
+            />
+          </span>
         </div>
       </div>
     </div>

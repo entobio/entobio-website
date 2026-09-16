@@ -67,8 +67,8 @@
   --color-carbon-lift: #14171A;
 
   --color-bone: #F2EDE3;
-  --color-bone-dim: rgba(242, 237, 227, 0.62);
-  --color-bone-faint: rgba(242, 237, 227, 0.30);
+  --color-bone-dim: rgba(242, 237, 227, 0.72);
+  --color-bone-faint: rgba(242, 237, 227, 0.38);
   --color-rule: rgba(242, 237, 227, 0.12);
   --color-rule-strong: rgba(242, 237, 227, 0.22);
 
@@ -121,8 +121,8 @@
   --carbon: #0F1113;
   --carbon-lift: #14171A;
   --bone: #F2EDE3;
-  --bone-dim: rgba(242, 237, 227, 0.62);
-  --bone-faint: rgba(242, 237, 227, 0.30);
+  --bone-dim: rgba(242, 237, 227, 0.72);
+  --bone-faint: rgba(242, 237, 227, 0.38);
   --rule: rgba(242, 237, 227, 0.12);
   --rule-strong: rgba(242, 237, 227, 0.22);
   --forest: #1E5631;
@@ -265,7 +265,6 @@
   /* Unlit and out of focus: dark, near-neutral, flat, genuinely soft. */
   filter: brightness(0.20) saturate(0.14) contrast(0.92) blur(6px);
   transform: scale(1.04) translate3d(var(--drift-x, 0px), var(--drift-y, 0px), 0);
-  will-change: transform, filter;
 }
 
 .layer-reveal {
@@ -280,7 +279,6 @@
   filter: brightness(1.12) saturate(0.44) contrast(1.12);
   transform: scale(1.04) translate3d(var(--drift-x, 0px), var(--drift-y, 0px), 0);
   clip-path: circle(var(--lens-r, 200px) at var(--lens-x, 50%) var(--lens-y, 50%));
-  will-change: clip-path, transform;
   z-index: 1;
 }
 
@@ -327,12 +325,6 @@
   animation: lens-orbit 20s linear infinite;
 }
 
-/* ---- Readout + ring hide on mobile (no pointer, no coordinates) ---- */
-@media (pointer: coarse) {
-  .lens-readout {
-    display: none;
-  }
-}
 
 /* ---- Reduced motion: lens locks centre ---- */
 @media (prefers-reduced-motion: reduce) {
