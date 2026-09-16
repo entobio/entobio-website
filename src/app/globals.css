@@ -1,0 +1,354 @@
+/* ============================================================
+   ENTOBIO CONSULT — globals.css
+   Design system tokens from DESIGN.md §2–5.
+   Tailwind v4 CSS-first configuration.
+   ============================================================ */
+
+/* --- Font Faces -------------------------------------------- */
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: optional;
+}
+
+/* --- Tailwind v4 ------------------------------------------- */
+
+@import "tailwindcss";
+
+/* --- Theme tokens → Tailwind utilities --------------------- */
+
+@theme {
+  /* ---- Colour · DESIGN.md §2 ---- */
+  --color-void: #08090A;
+  --color-carbon: #0F1113;
+  --color-carbon-lift: #14171A;
+
+  --color-bone: #F2EDE3;
+  --color-bone-dim: rgba(242, 237, 227, 0.62);
+  --color-bone-faint: rgba(242, 237, 227, 0.30);
+  --color-rule: rgba(242, 237, 227, 0.12);
+  --color-rule-strong: rgba(242, 237, 227, 0.22);
+
+  --color-forest: #1E5631;
+  --color-moss: #6B8F3E;
+
+  --color-amber: #D89A3E;
+  --color-amber-dim: rgba(216, 154, 62, 0.42);
+  --color-glow: rgba(216, 154, 62, 0.14);
+
+  /* ---- Font families ---- */
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter Tight', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---- Typography scale · DESIGN.md §3 ---- */
+  --text-hero: clamp(3.4rem, 10.5vw, 12rem);
+  --text-display: clamp(2.4rem, 6vw, 6rem);
+  --text-section: clamp(2rem, 5.4vw, 5.4rem);
+  --text-row: clamp(1.5rem, 3vw, 2.6rem);
+  --text-lead: clamp(1rem, 1.2vw, 1.125rem);
+  --text-body: 0.9375rem;
+  --text-small: 0.8125rem;
+  --text-mono: 0.6875rem;
+
+  /* ---- Spacing & layout · DESIGN.md §4 ---- */
+  --spacing-gutter: clamp(20px, 5vw, 64px);
+  --spacing-section: clamp(96px, 14vh, 200px);
+
+  /* ---- Breakpoints · DESIGN.md §8 ---- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1440px;
+
+  /* ---- Motion durations · DESIGN.md §5 ---- */
+  --duration-hover: 200ms;
+  --duration-small: 400ms;
+  --duration-entrance: 800ms;
+  --duration-rack: 1400ms;
+
+  /* ---- Easing (CSS) ---- */
+  --ease-cubic: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Raw CSS custom properties (non-Tailwind) -------------- */
+
+:root {
+  /* Raw tokens for use in CSS/JS where Tailwind utilities don't apply */
+  --void: #08090A;
+  --carbon: #0F1113;
+  --carbon-lift: #14171A;
+  --bone: #F2EDE3;
+  --bone-dim: rgba(242, 237, 227, 0.62);
+  --bone-faint: rgba(242, 237, 227, 0.30);
+  --rule: rgba(242, 237, 227, 0.12);
+  --rule-strong: rgba(242, 237, 227, 0.22);
+  --forest: #1E5631;
+  --moss: #6B8F3E;
+  --amber: #D89A3E;
+  --amber-dim: rgba(216, 154, 62, 0.42);
+  --glow: rgba(216, 154, 62, 0.14);
+
+  --t-hero: clamp(3.4rem, 10.5vw, 12rem);
+  --t-display: clamp(2.4rem, 6vw, 6rem);
+  --t-section: clamp(2rem, 5.4vw, 5.4rem);
+  --t-row: clamp(1.5rem, 3vw, 2.6rem);
+  --t-lead: clamp(1rem, 1.2vw, 1.125rem);
+  --t-body: 0.9375rem;
+  --t-small: 0.8125rem;
+  --t-mono: 0.6875rem;
+
+  --gutter: clamp(20px, 5vw, 64px);
+  --max: 1560px;
+  --section: clamp(96px, 14vh, 200px);
+}
+
+/* --- Base resets ------------------------------------------- */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--t-body);
+    line-height: 1.6;
+    color: var(--bone);
+    background-color: var(--void);
+    overflow-x: hidden;
+  }
+
+  /* ---- Focus states · DESIGN.md §6 ---- */
+  :focus-visible {
+    outline: 1px solid var(--amber);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---- Reduced motion ---- */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ---- Selection ---- */
+  ::selection {
+    background-color: var(--amber);
+    color: var(--void);
+  }
+
+  /* ---- Body copy max width ---- */
+  p {
+    max-width: 65ch;
+  }
+
+  /* ---- Anchor reset ---- */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ---- List reset ---- */
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  /* ---- Image reset ---- */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ---- Button reset ---- */
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* ============================================================
+   HERO LENS — HOMEPAGE-BUILD-SPEC §3.2
+   ============================================================ */
+
+/* ---- Lens layers ---- */
+
+/*
+ * Grade differential re-balanced against the real HERO-01 texture
+ * (ommatidia lattice, 23.4% mean luminance). The values in
+ * HOMEPAGE-BUILD-SPEC §3.2 were authored against a placeholder and read as a
+ * mask being lifted: too large a flat brightness jump, and a saturation LIFT
+ * that pulled green/magenta iridescence out of an otherwise near-monochrome
+ * frame — colour DESIGN.md §2 does not permit here.
+ *
+ * The differential now comes from the base being recessive rather than the
+ * reveal being hot, which is what keeps the lens alive over the dark band
+ * through the middle of the frame without clipping the bright facets.
+ * Both layers stay desaturated: the reveal must not introduce colour the
+ * base does not have, or the eye reads a swap instead of a light.
+ */
+
+.layer-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Unlit and out of focus: dark, near-neutral, flat, genuinely soft. */
+  filter: brightness(0.20) saturate(0.14) contrast(0.92) blur(6px);
+  transform: scale(1.04) translate3d(var(--drift-x, 0px), var(--drift-y, 0px), 0);
+  will-change: transform, filter;
+}
+
+.layer-reveal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Lit and racked into focus. Contrast carries the raking light; the
+     brightness lift stays modest so specular facets don't blow out. */
+  filter: brightness(1.12) saturate(0.44) contrast(1.12);
+  transform: scale(1.04) translate3d(var(--drift-x, 0px), var(--drift-y, 0px), 0);
+  clip-path: circle(var(--lens-r, 200px) at var(--lens-x, 50%) var(--lens-y, 50%));
+  will-change: clip-path, transform;
+  z-index: 1;
+}
+
+/*
+ * Illumination falloff — the single change that stops this reading as a
+ * cut-out. clip-path stays as the field stop (§3.2, and a real objective
+ * does have a hard circular field edge, which the ring marks), but inside it
+ * the reveal now feathers back into the base across the outer third of the
+ * radius. Light has a centre and falls off; a mask does not.
+ *
+ * Gated to fine pointers: on touch the lens runs an autonomous Lissajous
+ * orbit every frame, and a second full-screen raster op per frame is not
+ * worth spending against the mobile Lighthouse budget (CLAUDE.md §8).
+ * Touch keeps the plain field stop.
+ */
+@media (pointer: fine) {
+  .layer-reveal {
+    -webkit-mask-image: radial-gradient(
+      circle var(--lens-r, 200px) at var(--lens-x, 50%) var(--lens-y, 50%),
+      #000 0%,
+      #000 62%,
+      rgba(0, 0, 0, 0.74) 81%,
+      rgba(0, 0, 0, 0.3) 94%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--lens-r, 200px) at var(--lens-x, 50%) var(--lens-y, 50%),
+      #000 0%,
+      #000 62%,
+      rgba(0, 0, 0, 0.74) 81%,
+      rgba(0, 0, 0, 0.3) 94%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
+
+/* ---- Amber ring orbit — 20s linear infinite ---- */
+@keyframes lens-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.lens-ring-orbit {
+  animation: lens-orbit 20s linear infinite;
+}
+
+/* ---- Readout + ring hide on mobile (no pointer, no coordinates) ---- */
+@media (pointer: coarse) {
+  .lens-readout {
+    display: none;
+  }
+}
+
+/* ---- Reduced motion: lens locks centre ---- */
+@media (prefers-reduced-motion: reduce) {
+  .layer-reveal {
+    clip-path: circle(var(--lens-r, 200px) at 50% 50%);
+    opacity: 0.45;
+  }
+  .layer-base {
+    filter: brightness(0.20) saturate(0.14) contrast(0.92);
+    transform: scale(1.04);
+  }
+  .lens-ring,
+  .lens-readout {
+    display: none;
+  }
+  .lens-ring-orbit {
+    animation: none;
+  }
+}
