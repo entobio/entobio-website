@@ -61,12 +61,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-20 font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim">
           {/* Column 1: Navigation Links */}
           <div className="flex flex-col space-y-3">
-            <span className="text-bone-dim text-[10px] mb-1 font-semibold">NAVIGATION</span>
+            <span className="text-amber text-[10px] mb-1 font-semibold">NAVIGATION</span>
             <Link href="/#marquee" className="hover:text-bone transition-colors duration-200">
               Catalogue
             </Link>
             <Link href="/services" className="hover:text-bone transition-colors duration-200">
-              Services
+              Services &amp; Capabilities
             </Link>
             <Link href="/imaging" className="hover:text-bone transition-colors duration-200">
               Scientific Imaging
@@ -75,7 +75,16 @@ export function Footer() {
               Publications
             </Link>
             <Link href="/outreach" className="hover:text-bone transition-colors duration-200">
-              Outreach
+              Outreach &amp; Education
+            </Link>
+            <Link href="/merchandise" className="hover:text-bone transition-colors duration-200">
+              Merchandise &amp; Gear
+            </Link>
+            <Link href="/clients" className="hover:text-bone transition-colors duration-200">
+              Clients &amp; Feedback
+            </Link>
+            <Link href="/news" className="hover:text-bone transition-colors duration-200">
+              News &amp; Invited Talks
             </Link>
             <Link href="/about" className="hover:text-bone transition-colors duration-200">
               About Founder

@@ -14,228 +14,139 @@
 
 'use client';
 
-import { useRef, useSyncExternalStore } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
 import { resolveSrc } from '@/lib/media';
 import { gsap, EASE } from '@/lib/gsap';
 import { useGsapContext } from '@/hooks/useScrollTrigger';
 import { COPY } from '@/content/copy';
 
-function subscribeReducedMotion(callback: () => void) {
-  if (typeof window === 'undefined') return () => {};
-  const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-  mql.addEventListener('change', callback);
-  return () => mql.removeEventListener('change', callback);
-}
-
-function getReducedMotionSnapshot(): boolean {
-  if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function getReducedMotionServerSnapshot(): boolean {
-  return false;
-}
-
-/**
- * Backdrop texture — the dedicated MANIFESTO-BG slot when it is generated,
- * falling back to DESCENT-04 (wing venation) until then. Renders at 0.06
- * opacity; both are §4.1 generated texture, no scientific claim.
- */
 const MANIFESTO_BG = resolveSrc('MANIFESTO-BG', 'DESCENT-04');
 
 export function Manifesto() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
-  const textContainerRef = useRef<HTMLDivElement>(null);
-  const lineRefs = useRef<(HTMLParagraphElement | null)[]>([]);
-
-  const isReduced = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot
-  );
-
-  const allLines = [...COPY.manifesto.lines, COPY.manifesto.finalLine];
+  const tagRef = useRef<HTMLParagraphElement>(null);
 
   useGsapContext(() => {
-    if (!containerRef.current || !pinRef.current || isReduced) return;
+    if (!containerRef.current || !textRef.current) return;
 
-    // Progressive Enhancement: transform static stack into pinned scrub
-    gsap.set(containerRef.current, { height: '300vh', padding: 0 });
-    gsap.set(pinRef.current, {
-      height: '100vh',
-      overflow: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    });
-    if (textContainerRef.current) {
-      gsap.set(textContainerRef.current, { minHeight: '300px' });
-    }
-
-    // Set lines to absolute for focus-rack scrub
-    lineRefs.current.forEach((el) => {
-      if (!el) return;
-      gsap.set(el, { position: 'absolute', y: 30, opacity: 0, filter: 'blur(10px)' });
-    });
-
-    // Wing venation background rotation (0 → 8deg across 300vh scrub)
+    // Subtle parallax on the background wing venation
     if (bgImageRef.current) {
       gsap.fromTo(
         bgImageRef.current,
-        { rotate: 0 },
+        { scale: 1.05, opacity: 0.04, rotate: 0 },
         {
-          rotate: 8,
+          scale: 1.15,
+          opacity: 0.08,
+          rotate: 4,
           ease: 'none',
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 1,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
           },
         }
       );
     }
 
-    // Pinned Timeline for the 5 manifesto lines (NO CSS sticky — ScrollTrigger pin alone)
+    // Majestic Focus-Rack entrance for the single statement
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        pin: pinRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
+        start: 'top 75%',
+        end: 'center center',
+        toggleActions: 'play none none reverse',
       },
     });
 
-    const totalLines = allLines.length; // 5 lines
-    const stepDuration = 1 / totalLines; // 0.2 per line
-
-    allLines.forEach((_, i) => {
-      const el = lineRefs.current[i];
-      if (!el) return;
-
-      const startTime = i * stepDuration;
-      const isFinalLine = i === totalLines - 1;
-
-      // Focus-rack Entrance: y: 30, opacity: 0, blur: 10px → y: 0, opacity: 1, blur: 0px
+    if (tagRef.current) {
       tl.fromTo(
-        el,
-        { y: 30, opacity: 0, filter: 'blur(10px)' },
-        {
-          y: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration: stepDuration * 0.45,
-          ease: EASE.rack,
-        },
-        startTime
+        tagRef.current,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
       );
+    }
 
-      // Focus-rack Exit for lines 1-4: y: 0, opacity: 1, blur: 0px → y: -30, opacity: 0, blur: 10px
-      // Line 5 (final amber line) stays on screen!
-      if (!isFinalLine) {
-        tl.to(
-          el,
-          {
-            y: -30,
-            opacity: 0,
-            filter: 'blur(10px)',
-            duration: stepDuration * 0.45,
-            ease: EASE.rack,
-          },
-          startTime + stepDuration * 0.55
-        );
-      }
-    });
-  }, containerRef);
-
-  // If reduced motion is requested, render clean vertical stack in flow
-  if (isReduced) {
-    return (
-      <section
-        id="manifesto"
-        className="relative w-full bg-void py-24 md:py-32"
-      >
-        <div className="max-w-[1000px] mx-auto px-gutter flex flex-col gap-10 md:gap-14 text-center items-center">
-          {allLines.map((line, i) => {
-            const isFinal = i === allLines.length - 1;
-            return (
-              <p
-                key={i}
-                className={`font-display text-center leading-[1.05] tracking-[-0.03em] ${
-                  isFinal ? 'text-amber font-semibold' : 'text-bone'
-                }`}
-                style={{
-                  fontSize: 'var(--t-section)',
-                  maxWidth: '900px',
-                }}
-              >
-                {line}
-              </p>
-            );
-          })}
-        </div>
-      </section>
+    tl.fromTo(
+      textRef.current,
+      { opacity: 0, y: 35, filter: 'blur(12px)' },
+      {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        ease: EASE.rack,
+      },
+      '-=0.5'
     );
-  }
+  }, containerRef);
 
   return (
     <section
       ref={containerRef}
       id="manifesto"
-      className="relative w-full bg-void py-24 md:py-32"
+      className="relative w-full bg-void min-h-[75vh] md:min-h-[85vh] flex items-center justify-center py-24 md:py-36 px-gutter overflow-hidden border-t border-b border-rule/50"
     >
-      {/* Pinned Viewport Container (NO CSS sticky — ScrollTrigger pin alone) */}
+      {/* Background Wing-Venation Macro Texture (opacity: 0.05) */}
       <div
-        ref={pinRef}
-        className="w-full h-full overflow-hidden bg-void flex items-center justify-center"
+        ref={bgImageRef}
+        className="absolute inset-0 w-full h-full pointer-events-none filter blur-[1.5px]"
+        aria-hidden="true"
       >
-        {/* Background Wing-Venation Macro Image (opacity: 0.06, blur: 2px, rotating 0→8deg) */}
-        <div
-          ref={bgImageRef}
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.06] filter blur-[2px] scale-110"
-          aria-hidden="true"
+        {MANIFESTO_BG && (
+          <Image
+            src={MANIFESTO_BG}
+            alt=""
+            fill
+            className="object-cover object-center"
+          />
+        )}
+      </div>
+
+      {/* Atmospheric radial vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 50%, rgba(8,9,10,0.4) 0%, rgba(8,9,10,0.95) 75%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Content Container */}
+      <div className="relative z-10 max-w-[1100px] mx-auto text-center flex flex-col items-center">
+        {/* Eyebrow tag */}
+        <p
+          ref={tagRef}
+          className="font-mono text-[11px] uppercase tracking-[0.22em] text-amber mb-8 md:mb-12 font-medium"
         >
-          {MANIFESTO_BG && (
-            <Image
-              src={MANIFESTO_BG}
-              alt=""
-              fill
-              className="object-cover object-center"
-            />
-          )}
+          04 — THE TAXONOMIC IMPERATIVE
+        </p>
+
+        {/* The Single Retained Statement — PDF Page 4 & 5 */}
+        <h2
+          ref={textRef}
+          className="font-display text-[#F7F5F0] text-center leading-[1.02] tracking-[-0.03em] max-w-[960px] drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]"
+          style={{
+            fontSize: 'clamp(2.5rem, 5.5vw, 5.2rem)',
+          }}
+        >
+          &ldquo;{COPY.manifesto.statement}&rdquo;
+        </h2>
+
+        {/* Decorative precision caliper line */}
+        <div className="mt-10 md:mt-14 flex items-center justify-center gap-4 w-full max-w-[280px]">
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent to-amber/60" />
+          <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+          <span className="h-px flex-1 bg-gradient-to-l from-transparent to-amber/60" />
         </div>
 
-        {/* Centered Manifesto Lines — defaults to static vertical flow stack */}
-        <div
-          ref={textContainerRef}
-          className="relative z-10 max-w-[1200px] w-full px-gutter text-center flex flex-col items-center justify-center gap-10 md:gap-14"
-        >
-          {allLines.map((line, i) => {
-            const isFinal = i === allLines.length - 1;
-
-            return (
-              <p
-                key={i}
-                ref={(el) => {
-                  lineRefs.current[i] = el;
-                }}
-                className={`font-display text-center leading-[1.05] tracking-[-0.03em] ${
-                  isFinal ? 'text-amber font-semibold' : 'text-bone'
-                }`}
-                style={{
-                  fontSize: 'var(--t-section)',
-                  maxWidth: '900px',
-                }}
-              >
-                {line}
-              </p>
-            );
-          })}
-        </div>
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mt-5">
+          ENTOMOLOGICAL CONSERVATION &amp; NOMENCLATURE
+        </p>
       </div>
     </section>
   );

@@ -65,16 +65,26 @@ export function Hero() {
           ))}
         </h1>
 
-        {/* Subline — Inter Tight, --bone-dim */}
+        {/* Subline — high-contrast scientific designation */}
         <p
-          className="font-body text-bone-dim text-center mt-6 md:mt-8"
+          className="font-body text-[#F7F5F0] text-center mt-6 md:mt-8 px-4"
           style={{
-            fontSize: '15px',
-            lineHeight: 1.5,
-            maxWidth: '440px',
+            fontSize: 'clamp(14px, 1.6vw, 16px)',
+            lineHeight: 1.6,
+            maxWidth: '720px',
+            letterSpacing: '0.01em',
           }}
         >
-          {COPY.hero.subline}
+          {COPY.hero.subline.split(' | ').map((part, index, array) => (
+            <span key={part} className="inline-block whitespace-nowrap">
+              <span>{part}</span>
+              {index < array.length - 1 && (
+                <span className="text-amber/70 mx-2 sm:mx-2.5 font-light" aria-hidden="true">
+                  |
+                </span>
+              )}
+            </span>
+          ))}
         </p>
       </div>
 

@@ -12,6 +12,7 @@
 import type { Metadata } from 'next';
 import { ImagingHero } from '@/components/imaging/ImagingHero';
 import { FocusStackComparison } from '@/components/imaging/FocusStackComparison';
+import { SpecimenGallery } from '@/components/imaging/SpecimenGallery';
 import { ImagingServicesIndex } from '@/components/imaging/ImagingServicesIndex';
 import { ImagingDeliverables } from '@/components/imaging/ImagingDeliverables';
 import { ImagingEquipment } from '@/components/imaging/ImagingEquipment';
@@ -65,7 +66,10 @@ export default function ImagingPage() {
       {/* Focus Stack Demonstration (Gated behind real assets) */}
       <FocusStackComparison />
 
-      {/* Six-Row Services Index */}
+      {/* Publication Specimen Plates Gallery */}
+      <SpecimenGallery />
+
+      {/* Five-Row Services Index */}
       <ImagingServicesIndex />
 
       {/* Deliverables & Technical Specifications */}

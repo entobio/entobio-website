@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EntoBio Consult — Launch Video</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+      :root {
+        --void: #08090a;
+        --carbon: #0f1113;
+        --carbon-lift: #16191c;
+        --bone: #f2ede3;
+        --bone-dim: #b8b3a8;
+        --bone-faint: #6e6b65;
+        --amber: #d89a3e;
+        --amber-glow: rgba(216, 154, 62, 0.25);
+        --rule: rgba(242, 237, 227, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 1920px;
+        height: 1080px;
+        background-color: var(--void);
+        color: var(--bone);
+        font-family: 'Inter', -apple-system, sans-serif;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #root {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 50%, #111417 0%, #08090a 100%);
+      }
+
+      /* Lab Grid Overlay */
+      .lab-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+          linear-gradient(to right, rgba(242, 237, 227, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(242, 237, 227, 0.03) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Corner Frame Reticles */
+      .corner-reticle {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        border-color: var(--amber);
+        opacity: 0.6;
+        z-index: 5;
+      }
+      .corner-tl { top: 48px; left: 48px; border-top: 2px solid; border-left: 2px solid; }
+      .corner-tr { top: 48px; right: 48px; border-top: 2px solid; border-right: 2px solid; }
+      .corner-bl { bottom: 48px; left: 48px; border-bottom: 2px solid; border-left: 2px solid; }
+      .corner-br { bottom: 48px; right: 48px; border-bottom: 2px solid; border-right: 2px solid; }
+
+      /* Top HUD Header */
+      .hud-header {
+        position: absolute;
+        top: 52px;
+        left: 96px;
+        right: 96px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--bone-dim);
+        z-index: 10;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 16px;
+      }
+      .hud-header .badge-amber {
+        color: var(--amber);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .hud-header .badge-amber::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background-color: var(--amber);
+        border-radius: 50%;
+        box-shadow: 0 0 8px var(--amber);
+      }
+
+      /* Shared Scene Layer */
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      /* ==========================================================================
+         SCENE 1: THE SCALE DESCENT
+         ========================================================================== */
+      #scene-1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 120px;
+      }
+
+      .scene-1-bg-tex {
+        position: absolute;
+        inset: 0;
+        background: url('assets/media/descent-02.png') center/cover no-repeat;
+        opacity: 0.15;
+        mix-blend-mode: luminosity;
+        filter: blur(4px);
+        transform: scale(1.1);
+      }
+
+      .descent-eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        letter-spacing: 0.25em;
+        color: var(--amber);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+
+      .descent-title {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 88px;
+        line-height: 1.0;
+        letter-spacing: -0.02em;
+        margin: 0 0 40px 0;
+        color: var(--bone);
+      }
+
+      .scale-track {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 40px;
+        z-index: 2;
+      }
+
+      .scale-card {
+        background: rgba(15, 17, 19, 0.85);
+        border: 1px solid var(--rule);
+        padding: 24px 32px;
+        border-radius: 2px;
+        min-width: 240px;
+        text-align: left;
+        opacity: 0.35;
+        transform: translateY(20px);
+      }
+      .scale-card.active {
+        opacity: 1;
+        border-color: var(--amber);
+        box-shadow: 0 0 30px rgba(216, 154, 62, 0.15);
+      }
+
+      .scale-val {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--bone);
+        margin-bottom: 6px;
+      }
+      .scale-card.active .scale-val {
+        color: var(--amber);
+      }
+
+      .scale-label {
+        font-size: 15px;
+        color: var(--bone-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .descent-punchline {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-style: italic;
+        font-size: 40px;
+        color: var(--bone-dim);
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      /* ==========================================================================
+         SCENE 2: SPECIMEN REVEAL & FOCUS RACK
+         ========================================================================== */
+      #scene-2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 100px;
+      }
+
+      .specimen-stage {
+        position: relative;
+        width: 820px;
+        height: 820px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .optical-ring {
+        position: absolute;
+        width: 680px;
+        height: 680px;
+        border: 1px dashed rgba(216, 154, 62, 0.4);
+        border-radius: 50%;
+        box-shadow: 0 0 50px rgba(216, 154, 62, 0.08);
+      }
+
+      .optical-ring-outer {
+        position: absolute;
+        width: 740px;
+        height: 740px;
+        border: 1px solid rgba(242, 237, 227, 0.12);
+        border-radius: 50%;
+      }
+
+      .crosshair-h {
+        position: absolute;
+        width: 760px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(216, 154, 62, 0.45) 20%, rgba(216, 154, 62, 0.45) 80%, transparent);
+      }
+      .crosshair-v {
+        position: absolute;
+        height: 760px;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(216, 154, 62, 0.45) 20%, rgba(216, 154, 62, 0.45) 80%, transparent);
+      }
+
+      .specimen-img {
+        position: absolute;
+        width: 640px;
+        height: 640px;
+        object-fit: contain;
+        z-index: 3;
+        filter: blur(16px);
+        transform: scale(0.92);
+      }
+
+      .taxa-overlay {
+        position: absolute;
+        right: 140px;
+        top: 260px;
+        width: 580px;
+        background: rgba(15, 17, 19, 0.92);
+        border: 1px solid var(--rule);
+        border-left: 3px solid var(--amber);
+        padding: 40px 48px;
+        border-radius: 2px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        z-index: 10;
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      .taxa-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 14px;
+        display: inline-block;
+      }
+
+      .taxa-binomial {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 50px;
+        font-style: italic;
+        line-height: 1.05;
+        color: var(--bone);
+        margin-bottom: 12px;
+      }
+
+      .taxa-authority {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        color: var(--bone-dim);
+        margin-bottom: 24px;
+      }
+
+      .taxa-journal {
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--bone-dim);
+        border-top: 1px solid var(--rule);
+        padding-top: 18px;
+      }
+
+      .scale-bar-bracket {
+        position: absolute;
+        bottom: 140px;
+        left: 200px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: var(--bone-dim);
+        letter-spacing: 0.15em;
+        opacity: 0;
+        z-index: 5;
+      }
+      .scale-bar-line {
+        width: 140px;
+        height: 2px;
+        background: var(--amber);
+        position: relative;
+      }
+      .scale-bar-line::before, .scale-bar-line::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 10px;
+        background: var(--amber);
+        top: -4px;
+      }
+      .scale-bar-line::before { left: 0; }
+      .scale-bar-line::after { right: 0; }
+
+      /* ==========================================================================
+         SCENE 3: THE RECORD & EPONYMOUS TAXA
+         ========================================================================== */
+      #scene-3 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 140px;
+      }
+
+      .record-header {
+        margin-bottom: 48px;
+      }
+      .record-eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.22em;
+        color: var(--amber);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .record-headline {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 72px;
+        line-height: 0.95;
+        margin: 0;
+        color: var(--bone);
+      }
+
+      .record-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: stretch;
+      }
+
+      .stats-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .stat-box {
+        background: rgba(15, 17, 19, 0.8);
+        border: 1px solid var(--rule);
+        padding: 32px 28px;
+        border-radius: 2px;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .stat-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 54px;
+        font-weight: 600;
+        line-height: 1.0;
+        color: var(--amber);
+        margin-bottom: 12px;
+      }
+
+      .stat-text {
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--bone-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .eponymous-card {
+        background: rgba(20, 23, 26, 0.95);
+        border: 1px solid var(--amber);
+        box-shadow: 0 0 40px rgba(216, 154, 62, 0.12);
+        padding: 44px 44px;
+        border-radius: 2px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      .epon-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        color: var(--amber);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      .epon-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px 0;
+      }
+
+      .epon-item {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 30px;
+        font-style: italic;
+        color: var(--bone);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .epon-item::before {
+        content: '—';
+        color: var(--amber);
+        font-style: normal;
+      }
+
+      .epon-quote {
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--bone-dim);
+        border-top: 1px solid var(--rule);
+        padding-top: 20px;
+        font-style: italic;
+      }
+
+      /* ==========================================================================
+         SCENE 4: MANIFESTO & BRAND OUTRO
+         ========================================================================== */
+      #scene-4 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 160px;
+      }
+
+      .manifesto-box {
+        position: absolute;
+        width: 1400px;
+        opacity: 0;
+        display: block;
+      }
+
+      .manifesto-line {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 56px;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+        color: var(--bone);
+        margin-bottom: 16px;
+      }
+      .manifesto-line.amber {
+        color: var(--amber);
+        font-style: italic;
+      }
+
+      .outro-brand-box {
+        position: absolute;
+        width: 1400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+      }
+
+      .outro-tagline {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 48px;
+        font-style: italic;
+        color: var(--bone-dim);
+        margin-bottom: 36px;
+      }
+
+      .outro-logo {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 96px;
+        line-height: 0.9;
+        letter-spacing: -0.02em;
+        color: var(--bone);
+        margin-bottom: 24px;
+        text-transform: uppercase;
+      }
+
+      .outro-divider {
+        width: 160px;
+        height: 2px;
+        background: var(--amber);
+        margin-bottom: 28px;
+        box-shadow: 0 0 16px var(--amber);
+      }
+
+      .outro-sub {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 15px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--bone-dim);
+        margin-bottom: 12px;
+      }
+
+      .outro-founder {
+        font-size: 18px;
+        color: var(--bone);
+        margin-bottom: 24px;
+      }
+
+      .outro-url {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        letter-spacing: 0.25em;
+        color: var(--amber);
+        text-transform: uppercase;
+      }
+
+      /* Audio Cues Container */
+      #audio-container {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="19.0">
+      <!-- Background Lab Grid -->
+      <div class="lab-grid"></div>
+
+      <!-- Corner Reticles -->
+      <div class="corner-reticle corner-tl"></div>
+      <div class="corner-reticle corner-tr"></div>
+      <div class="corner-reticle corner-bl"></div>
+      <div class="corner-reticle corner-br"></div>
+
+      <!-- Top Scientific HUD -->
+      <div class="hud-header">
+        <div>BENGALURU · INDIA — ESTABLISHED 2025</div>
+        <div class="badge-amber">ENTOBIO CONSULT LABS</div>
+        <div>TAXONOMIC FRONTIER · 200µm</div>
+      </div>
+
+      <!-- Audio Elements -->
+      <div id="audio-container">
+        <audio id="bg-music" src="assets/music/music.mp3" data-start="0" data-duration="19.0" data-volume="0.85" data-fade-out="1.5"></audio>
+        
+        <!-- Scene 1 Scale descent clicks (exact duration matched) -->
+        <audio id="sfx-tick1" src="assets/sfx/click_001.ogg" data-start="1.60" data-duration="0.10" data-volume="0.7"></audio>
+        <audio id="sfx-tick2" src="assets/sfx/click_002.ogg" data-start="2.12" data-duration="0.01" data-volume="0.7"></audio>
+        <audio id="sfx-tick3" src="assets/sfx/click_003.ogg" data-start="2.65" data-duration="0.01" data-volume="0.7"></audio>
+        <audio id="sfx-tick4" src="assets/sfx/click_004.ogg" data-start="3.18" data-duration="0.01" data-volume="0.7"></audio>
+        
+        <!-- Scene 2 Shutter / focus rack snap -->
+        <audio id="sfx-shutter" src="assets/sfx/impactSoft_heavy_000.ogg" data-start="3.70" data-duration="0.51" data-volume="0.8"></audio>
+        
+        <!-- Scene 3 Counter ticks -->
+        <audio id="sfx-stat1" src="assets/sfx/switch_001.ogg" data-start="9.50" data-duration="0.61" data-volume="0.7"></audio>
+        <audio id="sfx-stat2" src="assets/sfx/switch_002.ogg" data-start="10.01" data-duration="0.61" data-volume="0.7"></audio>
+        <audio id="sfx-stat3" src="assets/sfx/switch_001.ogg" data-start="10.54" data-duration="0.61" data-volume="0.7"></audio>
+        <audio id="sfx-stat4" src="assets/sfx/switch_002.ogg" data-start="11.06" data-duration="0.61" data-volume="0.7"></audio>
+        
+        <!-- Scene 3 Eponymous reveal -->
+        <audio id="sfx-eponymous" src="assets/sfx/switch_004.ogg" data-start="12.65" data-duration="0.50" data-volume="0.75"></audio>
+        
+        <!-- Scene 4 Outro impact -->
+        <audio id="sfx-outro" src="assets/sfx/drop_001.ogg" data-start="16.20" data-duration="0.11" data-volume="0.75"></audio>
+      </div>
+
+      <!-- ======================================================================
+           SCENE 1: THE SCALE DESCENT (0.00s - 3.70s)
+           ====================================================================== -->
+      <div id="scene-1" class="scene">
+        <div class="scene-1-bg-tex"></div>
+        <div class="descent-eyebrow">OPTICAL MAGNIFICATION SEQUENCE</div>
+        <h1 class="descent-title">The Descent</h1>
+        
+        <div class="scale-track">
+          <div class="scale-card" id="scale-1">
+            <div class="scale-val">1 METRE</div>
+            <div class="scale-label">the grassland</div>
+          </div>
+          <div class="scale-card" id="scale-2">
+            <div class="scale-val">1 CENTIMETRE</div>
+            <div class="scale-label">the leaf</div>
+          </div>
+          <div class="scale-card" id="scale-3">
+            <div class="scale-val">1 MILLIMETRE</div>
+            <div class="scale-label">the insect</div>
+          </div>
+          <div class="scale-card" id="scale-4">
+            <div class="scale-val">200 MICROMETRES</div>
+            <div class="scale-label">the wing</div>
+          </div>
+        </div>
+
+        <div class="descent-punchline" id="descent-punch">This is where he works.</div>
+      </div>
+
+      <!-- ======================================================================
+           SCENE 2: SPECIMEN REVEAL & FOCUS RACK (3.70s - 8.96s)
+           ====================================================================== -->
+      <div id="scene-2" class="scene">
+        <div class="specimen-stage">
+          <div class="optical-ring-outer"></div>
+          <div class="optical-ring" id="optical-ring"></div>
+          <div class="crosshair-h"></div>
+          <div class="crosshair-v"></div>
+          <img class="specimen-img" id="specimen-img" src="assets/media/hero-specimen.png" alt="Insect Specimen" />
+        </div>
+
+        <div class="taxa-overlay" id="taxa-card">
+          <div class="taxa-badge">NEW SPECIES TO SCIENCE · HOLOTYPE</div>
+          <div class="taxa-binomial">Hypseloecus sandalum</div>
+          <div class="taxa-authority">YESHWANTH, 2014</div>
+          <div class="taxa-journal">
+            Taxonomy of Mirid Bugs (Hemiptera: Miridae)<br />
+            Published in Zootaxa 3878(1) · South India Survey
+          </div>
+        </div>
+
+        <div class="scale-bar-bracket" id="scale-bracket">
+          <div class="scale-bar-line"></div>
+          <div>MAG: 40X · 2.0 MM SCALE</div>
+        </div>
+      </div>
+
+      <!-- ======================================================================
+           SCENE 3: THE RECORD (8.96s - 13.70s)
+           ====================================================================== -->
+      <div id="scene-3" class="scene">
+        <div class="record-header">
+          <div class="record-eyebrow">VERIFIED TAXONOMIC EVIDENCE</div>
+          <h2 class="record-headline">150 Species Described New to Science</h2>
+        </div>
+
+        <div class="record-grid">
+          <div class="stats-col">
+            <div class="stat-box" id="stat-1">
+              <div class="stat-num">150</div>
+              <div class="stat-text">Species Described New to Science</div>
+            </div>
+            <div class="stat-box" id="stat-2">
+              <div class="stat-num">36</div>
+              <div class="stat-text">Peer-Reviewed Publications</div>
+            </div>
+            <div class="stat-box" id="stat-3">
+              <div class="stat-num">16</div>
+              <div class="stat-text">Years in Continuous Field Research</div>
+            </div>
+            <div class="stat-box" id="stat-4">
+              <div class="stat-num">FRES</div>
+              <div class="stat-text">Fellow, Royal Entomological Society</div>
+            </div>
+          </div>
+
+          <div class="eponymous-card" id="epon-card">
+            <div>
+              <div class="epon-tag">HONOURS CONFERRED BY PEER SCIENTISTS</div>
+              <ul class="epon-list">
+                <li class="epon-item">Evacanthus yeshwanthi</li>
+                <li class="epon-item">Oryctopterus yeshwanthi</li>
+                <li class="epon-item">Axiagastus yeshwanthi</li>
+              </ul>
+            </div>
+            <div class="epon-quote">
+              "When a colleague names a species after you, it is the field's way of recording that you changed what it knows."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================================
+           SCENE 4: MANIFESTO & BRAND OUTRO (13.70s - 19.00s)
+           ====================================================================== -->
+      <div id="scene-4" class="scene">
+        <div class="manifesto-box" id="manifesto-box" data-layout-allow-overlap="true">
+          <div class="manifesto-line">"A species without a name cannot be protected."</div>
+          <div class="manifesto-line">"Taxonomy is the layer beneath all of biology."</div>
+          <div class="manifesto-line amber">"And almost nobody can still do it."</div>
+        </div>
+
+        <div class="outro-brand-box" id="outro-box" data-layout-allow-overlap="true">
+          <div class="outro-tagline">"Everything begins with a name."</div>
+          <div class="outro-logo">EntoBio Consult</div>
+          <div class="outro-divider"></div>
+          <div class="outro-sub">Independent Insect Taxonomy & Scientific Macro Imaging</div>
+          <div class="outro-founder">Dr. H. M. Yeshwanth, Ph.D., FRES · Bengaluru, India</div>
+          <div class="outro-url">entobioconsult.com</div>
+        </div>
+      </div>
+
+      <!-- GSAP Master Animation Script -->
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // SCENE 1: (0.00s - 3.70s)
+        tl.set("#scene-1", { autoAlpha: 1 }, 0.0);
+
+        // Scale steps snapped to beat grid: 1.60s, 2.12s, 2.65s, 3.18s
+        tl.to("#scale-1", { opacity: 1, y: 0, duration: 0.25, className: "scale-card active", ease: "back.out(1.5)" }, 1.60);
+        tl.to("#scale-2", { opacity: 1, y: 0, duration: 0.25, className: "scale-card active", ease: "back.out(1.5)" }, 2.12);
+        tl.to("#scale-3", { opacity: 1, y: 0, duration: 0.25, className: "scale-card active", ease: "back.out(1.5)" }, 2.65);
+        tl.to("#scale-4", { opacity: 1, y: 0, duration: 0.25, className: "scale-card active", ease: "back.out(1.5)" }, 3.18);
+        tl.to("#descent-punch", { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 3.25);
+
+        // Exit Scene 1
+        tl.to("#scene-1", { opacity: 0, scale: 0.96, duration: 0.25, ease: "power3.in" }, 3.45);
+        tl.set("#scene-1", { autoAlpha: 0 }, 3.70);
+
+        // SCENE 2: SPECIMEN REVEAL & FOCUS RACK (3.70s - 8.96s)
+        tl.set("#scene-2", { autoAlpha: 1 }, 3.70);
+        
+        // Focus rack on specimen: blur 16px -> 0px, scale 0.92 -> 1.0
+        tl.fromTo("#specimen-img", 
+          { filter: "blur(18px)", scale: 0.9 }, 
+          { filter: "blur(0px)", scale: 1.0, duration: 0.85, ease: "power3.out" }, 
+          3.70
+        );
+
+        // Optical ring rotation & glow
+        tl.fromTo("#optical-ring", 
+          { rotation: 0, scale: 0.85, opacity: 0 }, 
+          { rotation: 90, scale: 1.0, opacity: 1, duration: 1.4, ease: "power2.out" }, 
+          3.70
+        );
+
+        // Scale bar & Taxa overlay card settlement
+        tl.to("#scale-bracket", { opacity: 1, duration: 0.5, ease: "power2.out" }, 4.30);
+        tl.to("#taxa-card", { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 4.60);
+
+        // Continuous subtle specimen floating
+        tl.to("#specimen-img", { scale: 1.03, rotation: 1.5, duration: 3.9, ease: "sine.inOut", overwrite: "auto" }, 4.65);
+
+        // Exit Scene 2
+        tl.to("#scene-2", { opacity: 0, x: -30, duration: 0.35, ease: "power3.in" }, 8.55);
+        tl.set("#scene-2", { autoAlpha: 0 }, 8.95);
+
+        // SCENE 3: THE RECORD (8.96s - 13.70s)
+        tl.set("#scene-3", { autoAlpha: 1 }, 8.96);
+
+        // Beat-locked stat reveals: 9.50s, 10.01s, 10.54s, 11.06s
+        tl.to("#stat-1", { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 9.50);
+        tl.to("#stat-2", { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 10.01);
+        tl.to("#stat-3", { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 10.54);
+        tl.to("#stat-4", { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.4)" }, 11.06);
+
+        // Eponymous Taxa Honors card settlement at strong beat 12.65s
+        tl.to("#epon-card", { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 12.0);
+
+        // Exit Scene 3 completely before Scene 4 starts
+        tl.to("#scene-3", { opacity: 0, y: -20, duration: 0.3, ease: "power3.in" }, 13.35);
+        tl.set("#scene-3", { autoAlpha: 0 }, 13.68);
+
+        // SCENE 4: MANIFESTO & BRAND OUTRO (13.70s - 19.00s)
+        tl.set("#scene-4", { autoAlpha: 1 }, 13.70);
+        
+        // Manifesto lines entrance
+        tl.to("#manifesto-box", { opacity: 1, duration: 0.4, ease: "power2.out" }, 13.75);
+        tl.to("#manifesto-box", { opacity: 0, y: -20, duration: 0.35, ease: "power2.in" }, 15.75);
+        tl.set("#manifesto-box", { display: "none" }, 16.15);
+
+        // Final Outro Brand Lockup entrance at 16.20s
+        tl.to("#outro-box", { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 16.20);
+        tl.fromTo(".outro-divider", { width: 0 }, { width: 160, duration: 0.5, ease: "power2.out" }, 16.50);
+
+        // Final fade into black at the tail end
+        tl.to("#root", { opacity: 0, duration: 0.5, ease: "power2.in" }, 18.50);
+
+        window.__timelines["root"] = tl;
+      </script>
+    </div>
+  </body>
+</html>

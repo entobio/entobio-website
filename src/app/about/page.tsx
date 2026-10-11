@@ -4,9 +4,10 @@
  */
 
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { SITE } from '@/lib/site';
 import { COPY } from '@/content/copy';
-import { INSTITUTIONS, HONOURS } from '@/content/credentials';
+import { HONOURS } from '@/content/credentials';
 import { Footer } from '@/components/layout/Footer';
 import { breadcrumbSchema } from '@/lib/schema';
 
@@ -53,35 +54,60 @@ export default function AboutPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-20">
-          {/* Bio Column */}
-          <div className="lg:col-span-7 space-y-6 font-body text-[16px] text-bone-dim leading-relaxed">
+          {/* Bio Column — verbatim 3 paragraphs from Dr. Yeshwanth */}
+          <div className="lg:col-span-7 space-y-7 font-body text-[17px] text-[#E0DBD0] leading-[1.75]">
             {COPY.founder.bio.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+              <p key={index} className="border-l-2 border-amber/30 pl-5 lg:pl-6 py-0.5">
+                {paragraph}
+              </p>
             ))}
           </div>
 
-          {/* Key Facts / Monograph Accent Card */}
-          <div className="lg:col-span-5 border border-rule bg-carbon/60 p-8 rounded-[2px] space-y-8">
-            <div>
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim font-semibold mb-4">
-                AFFILIATIONS & PAST ROLES
-              </h3>
-              <ul className="space-y-2 font-mono text-[12px] text-bone">
-                {INSTITUTIONS.map((inst) => (
-                  <li key={inst}>• {inst}</li>
-                ))}
-              </ul>
+          {/* Distinctions & Academic Honours with Field Research Imagery */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Field Observation Frame */}
+            <div className="border border-rule bg-carbon/60 p-5 rounded-[2px] shadow-xl">
+              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-void overflow-hidden rounded-[2px] border border-rule/60">
+                <Image
+                  src="/media/web/field/img_6704.webp"
+                  alt="Live Miridae true bug perched on dew-covered foliage photographed in field by Dr. H. M. Yeshwanth"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="object-cover object-center"
+                />
+                <div className="absolute top-3 left-3 bg-void/85 border border-rule px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-amber font-semibold">
+                  FIELD RESEARCH ARCHIVE
+                </div>
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-bone-dim mt-3">
+                Live Miridae microhabitat observation · High-resolution field photography by Dr. Yeshwanth
+              </p>
             </div>
 
-            <div className="border-t border-rule pt-6">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim font-semibold mb-4">
-                DISTINCTIONS
-              </h3>
-              <ul className="space-y-2 font-mono text-[12px] text-bone">
-                {HONOURS.map((honour) => (
-                  <li key={honour}>• {honour}</li>
-                ))}
-              </ul>
+            {/* Distinctions & Honours */}
+            <div className="border border-rule/80 bg-carbon/60 p-8 rounded-[2px] space-y-6 shadow-xl">
+              <div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber font-semibold block mb-4">
+                  DISTINCTIONS &amp; HONOURS
+                </span>
+                <ul className="space-y-3 font-body text-[14px] text-bone">
+                  {HONOURS.map((honour) => (
+                    <li key={honour} className="flex items-start gap-2.5">
+                      <span className="text-amber mt-1 text-[12px]" aria-hidden="true">✦</span>
+                      <span className="leading-snug">{honour}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="border-t border-rule pt-6">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-bone-dim block mb-2">
+                  FOUNDER CONSULTANCY
+                </span>
+                <p className="font-body text-[13px] text-bone-dim leading-relaxed">
+                  Independent entomological consulting, taxonomy, and scientific imaging based in Bengaluru, India.
+                </p>
+              </div>
             </div>
           </div>
         </div>

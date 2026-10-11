@@ -32,10 +32,10 @@ export default function ServicesPage() {
         }}
       />
       <div className="max-w-[1560px] mx-auto px-gutter pb-20">
-        {/* Page Header */}
-        <div className="mb-16 border-b border-rule pb-12">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-4 font-semibold">
-            ENTOMOLOGICAL CONSULTING & RESEARCH
+        {/* Page Header — PDF Page 6 */}
+        <div className="mb-16 border-b border-rule pb-12 max-w-[900px]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4 font-semibold">
+            ENTOMOLOGICAL CONSULTING &amp; RESEARCH
           </p>
           <h1
             className="font-display text-bone mb-6"
@@ -45,14 +45,15 @@ export default function ServicesPage() {
               letterSpacing: '-0.03em',
             }}
           >
-            Capabilities
+            Focus on science and services
           </h1>
-          <p className="font-body text-bone-dim text-[16px] max-w-[560px] leading-relaxed">
-            Nine specialised services rooted in 16 years of field research, museum collection curation, and scientific publication.
+          <p className="font-body text-[#D5D0C6] text-[17px] leading-relaxed">
+            Providing scientific expertise and practical support in insect identification, taxonomy,
+            biodiversity documentation, specimen imaging.
           </p>
         </div>
 
-        {/* Stacked Nine Services */}
+        {/* Stacked Eight Services */}
         <div className="space-y-16 mb-20">
           {SERVICES.map((service) => {
             return (
@@ -63,11 +64,11 @@ export default function ServicesPage() {
               >
                 {/* Number & Name */}
                 <div className="lg:col-span-6 flex flex-col items-start">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-2">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-2 font-semibold">
                     SERVICE {service.n}
                   </span>
                   <h2
-                    className="font-display text-bone"
+                    className="font-display text-[#F7F5F0]"
                     style={{
                       fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
                       lineHeight: 0.95,
@@ -83,13 +84,13 @@ export default function ServicesPage() {
                   <p className="font-body text-bone-dim text-[15px] leading-relaxed mb-6 max-w-[480px]">
                     {service.line}
                   </p>
-                  {service.n === '03' ? (
+                  {service.n === '02' ? (
                     <div className="flex flex-wrap items-center gap-3">
                       <Button variant="primary" href="/imaging">
                         Explore Imaging Lab →
                       </Button>
                       <Button variant="ghost" href="/contact">
-                        Enquire for Service 03
+                        Enquire for Service 02
                       </Button>
                     </div>
                   ) : (

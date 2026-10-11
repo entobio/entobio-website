@@ -153,27 +153,148 @@ const CAPABILITY_PLATES: MediaSlot[] = CAP_SUBJECTS.map((subject, i) => ({
  * asset is hidden, never filled.
  * ------------------------------------------------------------------ */
 
-/** PLATE-01…24 — marquee enrichment. Fallback: typographic cards (§3). */
-const MARQUEE_PLATES: MediaSlot[] = Array.from({ length: 24 }, (_, i) => ({
-  id: `PLATE-${String(i + 1).padStart(2, '0')}`,
-  src: null,
-  alt: '',
-  source: 'client' as const,
-  w: 2400,
-  h: 3000,
-  required: false,
-}));
+/** PLATE-01…24 — marquee enrichment. Filled with authentic client specimen plates. */
+const MARQUEE_PLATES: MediaSlot[] = [
+  {
+    id: 'PLATE-01',
+    src: '/media/web/specimens/plate-iso-head.webp',
+    alt: 'High-magnification cephalic diagnostic morphology with ommatidial and antennal detail',
+    source: 'client',
+    w: 1440,
+    h: 2000,
+    required: false,
+  },
+  {
+    id: 'PLATE-02',
+    src: '/media/web/specimens/plate-figure-1-types.webp',
+    alt: 'Holotype specimen plate illustrating male pygophore, parameres, and habitus',
+    source: 'client',
+    w: 1440,
+    h: 2000,
+    required: false,
+  },
+  {
+    id: 'PLATE-03',
+    src: '/media/web/specimens/plate-thaipunctulus-bidentatus.webp',
+    alt: 'Thaipunctulus bidentatus dorsal and lateral habitus, pygofer processes, and genital styles',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: false,
+  },
+  {
+    id: 'PLATE-04',
+    src: '/media/web/specimens/plate-morphology-series.webp',
+    alt: 'Miridae specimen series with dissected endosomal sclerites and parameres',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: false,
+  },
+  {
+    id: 'PLATE-05',
+    src: '/media/web/specimens/plate-diagnostic-structures.webp',
+    alt: 'Microscopic focus-stacked valvulae structures and ovipositor dentition',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: false,
+  },
+  {
+    id: 'PLATE-06',
+    src: '/media/web/specimens/plate-holotype-suite.webp',
+    alt: 'Cephalic capsule comparative series with calibrated micrometer scale bars',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: false,
+  },
+  ...Array.from({ length: 18 }, (_, i) => ({
+    id: `PLATE-${String(i + 7).padStart(2, '0')}`,
+    src: null,
+    alt: '',
+    source: 'client' as const,
+    w: 2400,
+    h: 3000,
+    required: false,
+  })),
+];
 
-/** IMAGING-GALLERY-01…08 — /imaging filmstrip. Fallback: section hidden. */
-const IMAGING_GALLERY: MediaSlot[] = Array.from({ length: 8 }, (_, i) => ({
-  id: `IMAGING-GALLERY-${String(i + 1).padStart(2, '0')}`,
-  src: null,
-  alt: '',
-  source: 'client' as const,
-  w: 2400,
-  h: 1600,
-  required: true,
-}));
+/** IMAGING-GALLERY-01…08 — /imaging filmstrip. */
+const IMAGING_GALLERY: MediaSlot[] = [
+  {
+    id: 'IMAGING-GALLERY-01',
+    src: '/media/web/specimens/plate-iso-head.webp',
+    alt: 'Focus-stacked cephalic morphology with ommatidial structures',
+    source: 'client',
+    w: 1440,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-02',
+    src: '/media/web/specimens/plate-figure-1-types.webp',
+    alt: 'Holotype specimen diagnostic plate with male genitalia anatomy',
+    source: 'client',
+    w: 1440,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-03',
+    src: '/media/web/specimens/plate-thaipunctulus-bidentatus.webp',
+    alt: 'Thaipunctulus bidentatus leafhopper habitus and dissected pygofer anatomy',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-04',
+    src: '/media/web/specimens/plate-morphology-series.webp',
+    alt: 'Miridae comparative habitus and endosoma genital morphology',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-05',
+    src: '/media/web/specimens/plate-diagnostic-structures.webp',
+    alt: 'Micro-stacked ovipositor valvulae morphology with serrated margins',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-06',
+    src: '/media/web/specimens/plate-holotype-suite.webp',
+    alt: 'Comparative head capsule series with micrometer scale calibration',
+    source: 'client',
+    w: 1500,
+    h: 2000,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-07',
+    src: '/media/web/field/img_6704.webp',
+    alt: 'Live Miridae true bug in dew-covered natural habitat',
+    source: 'client',
+    w: 1568,
+    h: 1920,
+    required: true,
+  },
+  {
+    id: 'IMAGING-GALLERY-08',
+    src: '/media/web/field/_mg_4130.webp',
+    alt: 'Predatory bug preying on lace bug nymph on host leaf surface',
+    source: 'client',
+    w: 1920,
+    h: 1280,
+    required: true,
+  },
+];
 
 /** LAB-01…04 — /imaging equipment. Fallback: reuse CAP plates. */
 const LAB_PLATES: MediaSlot[] = Array.from({ length: 4 }, (_, i) => ({
@@ -186,47 +307,66 @@ const LAB_PLATES: MediaSlot[] = Array.from({ length: 4 }, (_, i) => ({
   required: false,
 }));
 
-/** OUTREACH-01…03 — /outreach. Fallback: mascot illustration only. */
-const OUTREACH_PLATES: MediaSlot[] = Array.from({ length: 3 }, (_, i) => ({
-  id: `OUTREACH-${String(i + 1).padStart(2, '0')}`,
-  src: null,
-  alt: '',
-  source: 'client' as const,
-  w: 2400,
-  h: 1600,
-  required: false,
-}));
+/** OUTREACH-01…03 — /outreach authentic photos. */
+const OUTREACH_PLATES: MediaSlot[] = [
+  {
+    id: 'OUTREACH-01',
+    src: '/media/web/outreach/exhibition-01-yesh7799.webp',
+    alt: 'Students examining entomological specimen drawers of pinned beetles at science exhibition',
+    source: 'client',
+    w: 1920,
+    h: 1280,
+    required: false,
+  },
+  {
+    id: 'OUTREACH-02',
+    src: '/media/web/outreach/exhibition-08-yesh8654.webp',
+    alt: 'Young student fascinated by blue Morpho butterfly and Batesian mimicry display case',
+    source: 'client',
+    w: 1920,
+    h: 1280,
+    required: false,
+  },
+  {
+    id: 'OUTREACH-03',
+    src: '/media/web/outreach/exhibition-05-yesh8109.webp',
+    alt: 'Children proudly presenting their entomological illustrations and beetle sketches at workshop',
+    source: 'client',
+    w: 1920,
+    h: 1280,
+    required: false,
+  },
+];
 
 const CLIENT: MediaSlot[] = [
   // /imaging before-after slider — one shallow frame + the final merged
-  // plate, same specimen. Both or neither: the section is hidden entirely
-  // until the pair exists.
+  // plate, same specimen.
   {
     id: 'IMAGING-STACK-A',
-    src: null,
-    alt: '',
+    src: '/media/web/specimens/focus-stack-single-slice.webp',
+    alt: 'Single shallow depth-of-field exposure with optical falloff',
     source: 'client',
-    w: 2400,
-    h: 1600,
+    w: 1920,
+    h: 1200,
     required: true,
   },
   {
     id: 'IMAGING-STACK-B',
-    src: null,
-    alt: '',
+    src: '/media/web/specimens/focus-stack-merged.webp',
+    alt: 'Full multi-frame focus-stacked composite plate sharp throughout',
     source: 'client',
-    w: 2400,
-    h: 1600,
+    w: 1920,
+    h: 1200,
     required: true,
   },
-  // /about hero. Fallback: typographic hero, no image.
+  // /about hero. Live macro field photograph by Dr. Yeshwanth.
   {
     id: 'FOUNDER-01',
-    src: null,
-    alt: '',
+    src: '/media/web/field/img_6704.webp',
+    alt: 'Live Miridae true bug on dew-covered plant shoot photographed in field by Dr. H. M. Yeshwanth',
     source: 'client',
-    w: 2400,
-    h: 1600,
+    w: 1568,
+    h: 1920,
     required: false,
   },
   ...MARQUEE_PLATES,

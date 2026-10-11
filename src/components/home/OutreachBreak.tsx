@@ -97,15 +97,15 @@ export function OutreachBreak() {
         {/* Right Column: Key Commitments */}
         <div className="lg:col-span-4 flex flex-col space-y-6 lg:border-l lg:border-void/15 lg:pl-10">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1">
-              FOCUS REGION
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1 font-semibold">
+              TARGET AUDIENCE
             </span>
             <p className="font-body text-[15px] text-void font-medium">
-              Rural Karnataka & Government Schools
+              Schools, Educators &amp; Academic Institutions
             </p>
           </div>
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1 font-semibold">
               FEE STRUCTURE
             </span>
             <p className="font-body text-[15px] text-void font-medium">
@@ -113,11 +113,11 @@ export function OutreachBreak() {
             </p>
           </div>
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/60 block mb-1 font-semibold">
               PROGRAMMES
             </span>
             <p className="font-body text-[15px] text-void font-medium">
-              Exhibitions · Teacher Training · Field Walks
+              3D Models &middot; Exhibitions &middot; Field Walks
             </p>
           </div>
         </div>

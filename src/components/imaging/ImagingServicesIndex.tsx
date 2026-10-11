@@ -24,34 +24,27 @@ export const IMAGING_SERVICES: readonly ImagingService[] = [
   },
   {
     n: '02',
-    name: 'Type Specimen Documentation',
+    name: 'Digitisation of the Collections',
     description:
-      'Diagnostic imaging of holotypes, paratypes and voucher material, including dorsal, lateral and genitalic preparations, to the standard required for taxonomic publication.',
-    sampleTypes: 'Primary Types · Vouchers · Genitalia',
+      'Batch imaging of reference collections, teaching sets, and institutional series, with consistent lighting, optical scale calibration, and metadata across the specimen series.',
+    sampleTypes: 'Institutional Collections · Series · Vouchers',
   },
   {
     n: '03',
-    name: 'Collection Digitisation',
-    description:
-      'Batch imaging of museum drawers, unit trays, teaching sets and reference collections, with consistent lighting, scale and metadata across the series.',
-    sampleTypes: 'Museum Trays · Series · Vouchers',
-  },
-  {
-    n: '04',
     name: 'Slide & Microscope Preparation Imaging',
     description:
       'Transmitted light, brightfield and phase imaging of permanent and temporary slide preparations.',
     sampleTypes: 'Slide Mounts · Dissections · Thin Sections',
   },
   {
-    n: '05',
+    n: '04',
     name: 'Comparative Plates',
     description:
       'Multi-specimen figures composed for publication: aligned, scaled, labelled and laid out to journal specification.',
     sampleTypes: 'Multi-Taxa Figures · Morphometric Series',
   },
   {
-    n: '06',
+    n: '05',
     name: 'Custom Documentation',
     description:
       'Non-standard samples, unusual magnifications, or imaging workflows developed for a specific research question.',
@@ -68,7 +61,7 @@ export function ImagingServicesIndex() {
       <div className="max-w-[1560px] mx-auto px-gutter">
         {/* Section Header */}
         <div className="max-w-[760px] mb-16">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mb-3">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-3 font-semibold">
             01 — SERVICES INDEX
           </p>
           <h2
@@ -82,7 +75,7 @@ export function ImagingServicesIndex() {
             Structured by sample type and diagnostic outcome.
           </h2>
           <p className="font-body text-bone-dim text-[16px] leading-relaxed">
-            Every specimen requires an individual optical strategy. Six specialised
+            Every specimen requires an individual optical strategy. Five specialised
             imaging modalities tailored to taxonomic publication, reference collections,
             and institutional digitisation.
           </p>

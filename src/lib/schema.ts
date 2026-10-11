@@ -84,14 +84,9 @@ export function imagingServicesSchema() {
         'Focus-stacked macro and micro plates of individual specimens: insects, arthropods, small invertebrates, botanical material. Publication-ready, figure-composed, at agreed magnification.',
     },
     {
-      name: 'Type Specimen Documentation',
+      name: 'Digitisation of the Collections',
       description:
-        'Diagnostic imaging of holotypes, paratypes and voucher material, including dorsal, lateral and genitalic preparations, to the standard required for taxonomic publication.',
-    },
-    {
-      name: 'Collection Digitisation',
-      description:
-        'Batch imaging of museum drawers, unit trays, teaching sets and reference collections, with consistent lighting, scale and metadata across the series.',
+        'Batch imaging of reference collections, teaching sets, and institutional series, with consistent lighting, optical scale calibration, and metadata across the specimen series.',
     },
     {
       name: 'Slide & Microscope Preparation Imaging',

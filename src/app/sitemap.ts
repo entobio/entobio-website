@@ -11,8 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/about',
     '/services',
+    '/imaging',
     '/publications',
     '/outreach',
+    '/merchandise',
+    '/clients',
+    '/news',
     '/contact',
   ];
 

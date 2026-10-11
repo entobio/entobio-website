@@ -22,28 +22,28 @@ export function TheRecord() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-          {/* Column 1: Institutions */}
+          {/* Column 1: Research Focus & Taxa */}
           <div className="flex flex-col">
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim pb-4 border-b border-rule mb-6">
-              INSTITUTIONS
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber pb-4 border-b border-rule mb-6 font-semibold">
+              RESEARCH FOCUS &amp; TAXA
             </h3>
-            <ul className="space-y-3 font-body text-[15px] text-bone/90">
-              {INSTITUTIONS.map((inst) => (
-                <li key={inst} className="leading-snug">
-                  {inst}
-                </li>
-              ))}
+            <ul className="space-y-3 font-body text-[15px] text-[#E0DBD0]">
+              <li className="leading-snug"><strong className="text-white font-medium">Miridae</strong> (Plant Bugs of South Asia)</li>
+              <li className="leading-snug"><strong className="text-white font-medium">Cicadellidae</strong> (Leafhoppers &amp; Treehoppers)</li>
+              <li className="leading-snug">Hemiptera of the Western Ghats &amp; Islands</li>
+              <li className="leading-snug">Agricultural Biodiversity &amp; Beneficials</li>
+              <li className="leading-snug">High-Resolution Scientific Stacking</li>
             </ul>
           </div>
 
           {/* Column 2: Journals */}
           <div className="flex flex-col md:border-l md:border-rule md:pl-10">
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim pb-4 border-b border-rule mb-6">
-              JOURNALS
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber pb-4 border-b border-rule mb-6 font-semibold">
+              SCIENTIFIC JOURNALS
             </h3>
-            <ul className="space-y-3 font-body text-[15px] text-bone/90">
+            <ul className="space-y-3 font-body text-[15px] text-[#E0DBD0]">
               {JOURNALS.map((journal) => (
-                <li key={journal} className="leading-snug italic font-display text-[17px]">
+                <li key={journal} className="leading-snug italic font-display text-[17px] text-[#F7F5F0]">
                   {journal}
                 </li>
               ))}
@@ -52,10 +52,10 @@ export function TheRecord() {
 
           {/* Column 3: Honours */}
           <div className="flex flex-col md:border-l md:border-rule md:pl-10">
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim pb-4 border-b border-rule mb-6">
-              HONOURS
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber pb-4 border-b border-rule mb-6 font-semibold">
+              HONOURS &amp; DISTINCTIONS
             </h3>
-            <ul className="space-y-3 font-body text-[15px] text-bone/90">
+            <ul className="space-y-3 font-body text-[15px] text-[#E0DBD0]">
               {HONOURS.map((honour) => (
                 <li key={honour} className="leading-snug">
                   {honour}

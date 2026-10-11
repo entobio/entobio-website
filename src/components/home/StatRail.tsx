@@ -53,33 +53,35 @@ export function StatRail() {
       {/* Hairline above */}
       <div className="w-full h-px bg-rule mb-6" />
 
-      {/* 4-col on desktop, 2×2 on mobile */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6">
+      {/* 3-col on desktop/tablet, stacked with hairlines on mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-5 sm:gap-y-0">
         {COPY.stats.map((stat, i) => (
           <div
             key={stat.label}
             className={`
               stat-cell relative
-              ${/* Vertical hairline between cols on desktop */ ''}
-              ${i > 0 ? 'md:border-l md:border-rule md:pl-6' : ''}
-              ${/* Horizontal hairlines on mobile 2×2 grid */ ''}
-              ${i >= 2 ? 'border-t border-rule pt-6 md:border-t-0 md:pt-0' : ''}
-              ${i % 2 !== 0 ? 'pl-6 border-l border-rule md:border-l md:pl-6' : ''}
+              ${/* Vertical hairline between columns on tablet/desktop */ ''}
+              ${i > 0 ? 'sm:border-l sm:border-rule sm:pl-8 lg:pl-10' : ''}
+              ${/* Horizontal hairline between items on small mobile screens */ ''}
+              ${i > 0 ? 'border-t border-rule/60 pt-4 sm:border-t-0 sm:pt-0' : ''}
             `}
           >
+            <div className="flex items-baseline gap-2">
+              <span
+                ref={(el) => { numberRefs.current[i] = el; }}
+                className="font-display block text-bone"
+                style={{
+                  fontSize: 'clamp(2rem, 3.2vw, 3rem)',
+                  lineHeight: 1,
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                0
+              </span>
+              <span className="font-mono text-amber text-[14px] font-semibold" aria-hidden="true">+</span>
+            </div>
             <span
-              ref={(el) => { numberRefs.current[i] = el; }}
-              className="font-display block"
-              style={{
-                fontSize: 'clamp(1.6rem, 2.6vw, 2.6rem)',
-                lineHeight: 1,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              0
-            </span>
-            <span
-              className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mt-1.5 block"
+              className="font-mono text-[11px] uppercase tracking-[0.18em] text-bone-dim mt-2 block font-medium"
             >
               {stat.label}
             </span>

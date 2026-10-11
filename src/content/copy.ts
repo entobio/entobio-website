@@ -12,7 +12,7 @@ export const COPY = {
     eyebrow: 'BENGALURU · INDIA — ESTABLISHED 2025',
     headline: ['Everything', 'begins with', 'a name.'],
     subline:
-      'Independent insect taxonomy, biodiversity research and scientific macro imaging.',
+      'Entomologist | Independent Researcher | Taxonomy | Biodiversity | High-Resolution Scientific Imaging',
   },
 
   /** The Descent — CONTENT.md §5 [V structure] */
@@ -26,38 +26,34 @@ export const COPY = {
     finalLine: 'This is where he works.',
   },
 
-  /** The Manifesto — CONTENT.md §6 [V] */
+  /** The Manifesto — single retained statement from client review */
   manifesto: {
-    lines: [
-      'A species without a name cannot be protected.',
-      'It cannot be regulated, traded, or conserved.',
-      'It cannot appear in a law, a report, or a paper.',
-      'Taxonomy is the layer beneath all of biology.',
-    ] as const,
-    finalLine: 'And almost nobody can still do it.',
+    statement: 'A species without a name cannot be protected.',
+    lines: ['A species without a name cannot be protected.'] as const,
+    finalLine: '',
   },
 
-  /** Species Marquee header — CONTENT.md §7 [V] */
+  /** Species & Discoveries header — CONTENT.md §7 */
   marquee: {
-    index: '03 — ONE HUNDRED AND FIFTY',
+    index: '03 — TAXONOMIC DISCOVERIES',
     headline: ['One hundred and', 'fifty species.'],
     body: [
       'Each one named, described and deposited.',
-      'Most had never been formally recorded.',
+      'Documenting and conserving insect diversity across the subcontinent.',
     ] as const,
   },
 
-  /** Eponymous caption — CONTENT.md §2 [V] */
+  /** Eponymous caption — PDF Page 2 */
   eponymous: {
-    caption: 'NAMED IN HIS HONOUR',
+    caption: 'EPONYMOUS TAXA',
     explainer:
-      'When a colleague names a species after you, it is the field\u2019s way of recording that you changed what it knows.',
+      'Taxa named in his honour by scientific peers — a lasting record of taxonomic impact and contribution to insect science.',
   },
 
-  /** Outreach — CONTENT.md §9 [V] */
+  /** Outreach — PDF Page 8 & 9 */
   outreach: {
-    headline: 'Free biodiversity programmes for government schools.',
-    body: 'Insect exhibitions with live and preserved specimens, entomophilately and scientific art. Teacher training and educational resources. Field visits, nature walks and citizen science. Offered free to government schools, with a focus on rural Karnataka.',
+    headline: 'Biodiversity programmes & science education.',
+    body: 'Insect exhibitions with live and preserved specimens, scientific art, and 3D models. Educational resources and biological field training for science educators. Guided biodiversity walks and hands-on insect observation in agroecosystems and biodiverse and aquatic habitats.',
     cta: 'Request a session',
   },
 
@@ -70,25 +66,22 @@ export const COPY = {
     fields: ['Name', 'Email', 'Message'] as const,
   },
 
-  /** Stats — CONTENT.md §1 [V] */
+  /** Stats — 3 key metrics (Taxa named in honour removed per PDF Page 1) */
   stats: [
     { value: 150, label: 'SPECIES DESCRIBED' },
     { value: 36, label: 'PUBLICATIONS' },
-    { value: 3, label: 'TAXA NAMED IN HIS HONOUR' },
     { value: 16, label: 'YEARS IN THE FIELD' },
   ] as const,
 
-  /** Founder — CONTENT.md §12 [V] */
+  /** Founder — PDF Page 9 & 10 verbatim bio */
   founder: {
     name: 'Dr. H. M. Yeshwanth',
     title: 'Ph.D., FRES',
     role: 'Founder and Principal Consultant, EntoBio Consult.',
     bio: [
-      'Ph.D. in Agricultural Entomology (Taxonomy), UAS GKVK, 2014. Dissertation on the Mirid Bugs (Hemiptera: Miridae) of South India.',
-      'Scientist In-charge and Curator of the Museum and Collection Facility at the National Centre for Biological Sciences, TIFR (2022\u20132024). Assistant Professor and Curator, Department of Entomology, UAS GKVK (2017\u20132022). Research Associate, ICAR Network Project on Insect Biosystematics.',
-      'Fellow of the Royal Entomological Society, London. Twice awarded the Ernst Mayr Travel Grant by the Museum of Comparative Zoology, Harvard University (Natural History Museum, London in 2016, and the Smithsonian National Museum of Natural History, Washington DC in 2024).',
-      'Co-editor of Indian Insects: Diversity and Science (CRC Press, 2019).',
-      'Field surveys across South India, the North-Eastern Hill regions, and the Andaman & Nicobar Islands, continuously since 2009.',
+      'An entomologist and independent researcher specialising in insect taxonomy, biodiversity, and natural history. His primary research interests are Miridae (plant bugs) and leafhoppers, with a broader focus on insect diversity, species identification, and conservation. He holds a Ph.D. in Agricultural Entomology from the University of Agricultural Sciences, Bengaluru (UAS GKVK).',
+      'He previously served as an Assistant Professor in the Department of Entomology at UAS GKVK, teaching undergraduate and postgraduate students. He also served as Curator of Research Collections, contributing to the development and management of scientific insect collections and providing insect identification services. Since 2009, he has conducted extensive field surveys across India, including the Andaman and Nicobar Islands, documenting insect diversity and contributing to taxonomic research.',
+      'Through EntoBio Consult, he provides independent research and scientific services in insect taxonomy, biodiversity assessment, species identification, natural history and research collection management, and high-resolution scientific imaging.',
     ] as const,
   },
 

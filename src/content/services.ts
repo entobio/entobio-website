@@ -1,7 +1,7 @@
 /**
  * src/content/services.ts
- * Nine capabilities — CONTENT.md §8 [V]
- * Order is his own ranking. No pricing anywhere on the site.
+ * Focus on science and services — PDF Page 6 & 7
+ * Order reflects client ranking and updated service scope.
  */
 
 export type Service = {
@@ -9,6 +9,13 @@ export type Service = {
   name: string;
   line: string;
 };
+
+export const SERVICES_HEADER = {
+  eyebrow: '05 — SCIENCE & SERVICES',
+  sectionTitle: 'Focus on science and services',
+  subtitle:
+    'Providing scientific expertise and practical support in insect identification, taxonomy, biodiversity documentation, specimen imaging.',
+} as const;
 
 export const SERVICES: readonly Service[] = [
   {
@@ -18,42 +25,37 @@ export const SERVICES: readonly Service[] = [
   },
   {
     n: '02',
-    name: 'Taxonomic Research & Species Revisions',
-    line: 'Revisionary work, new species descriptions, and generic reassessment.',
+    name: 'Scientific Imaging & Focus-Stacked Photography',
+    line: 'Publication-quality plates, diagnostic imaging, and specimen digitisation.',
   },
   {
     n: '03',
-    name: 'Scientific Imaging & Focus-Stacked Photography',
-    line: 'Publication-quality plates, diagnostic imaging, and type digitisation.',
-  },
-  {
-    n: '04',
     name: 'Science Outreach & Biodiversity Education',
     line: 'School programmes, insect exhibitions, and teacher training.',
   },
   {
-    n: '05',
+    n: '04',
     name: 'Biodiversity Surveys & Environmental Impact Assessment',
     line: 'Systematic insect survey and ecological monitoring for institutional projects.',
   },
   {
-    n: '06',
+    n: '05',
     name: 'Training Workshops & Internships',
     line: 'Taxonomy, microscopy and curation training for researchers and students.',
   },
   {
-    n: '07',
-    name: 'Pollinator & Agricultural Biodiversity Research',
-    line: 'Pollinator identification and agroecosystem diversity assessment.',
+    n: '06',
+    name: 'Agrobiodiversity, Pollinator Diversity, Beneficial Insects and Conservation Research',
+    line: 'Pollinator identification, beneficial insect assessment, and agroecosystem diversity research.',
   },
   {
-    n: '08',
+    n: '07',
     name: 'Integrated Pest Management Consultancy',
     line: 'Species-accurate pest diagnosis and scientifically grounded management advice.',
   },
   {
-    n: '09',
-    name: 'Museum & Research Collection Curation',
-    line: 'Collection management, specimen preservation, and digitisation.',
+    n: '08',
+    name: 'Natural History & Research Collection management',
+    line: 'Collection management, specimen preservation, curation, and digitisation.',
   },
 ] as const;

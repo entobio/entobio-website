@@ -8,7 +8,8 @@
 export const SITE = {
   url: 'https://entobioconsult.com',
   name: 'EntoBio Consult',
-  tagline: 'Independent insect taxonomy, biodiversity research and scientific macro imaging.',
+  tagline:
+    'Entomologist | Independent Researcher | Taxonomy | Biodiversity | High-Resolution Scientific Imaging',
   founder: 'Dr. H. M. Yeshwanth',
   orcid: '0000-0002-5104-3401',
   scholar: 'https://scholar.google.com/citations?user=4P1X5bAAAAAJ&hl=en',
