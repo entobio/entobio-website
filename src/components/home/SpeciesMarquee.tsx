@@ -17,7 +17,6 @@ import { useLenis } from 'lenis/react';
 import { gsap } from '@/lib/gsap';
 import { COPY } from '@/content/copy';
 import { PUBLICATIONS, EPONYMOUS, type Publication, type EponymousTaxon } from '@/content/publications';
-import Image from 'next/image';
 import { Binomial } from '@/components/ui/Binomial';
 import { PublicationTitle } from '@/components/ui/PublicationTitle';
 
@@ -29,30 +28,28 @@ function prefersReducedMotion(): boolean {
 const CARD_W = 340;
 const CARD_H = 260;
 
-const EPONYMOUS_IMAGES: Record<string, { src: string; alt: string; tag: string }> = {
+const EPONYMOUS_DETAILS: Record<string, { common: string; dedication: string }> = {
   Evacanthus: {
-    src: '/media/web/specimens/plate-thaipunctulus-bidentatus.webp',
-    alt: 'Cicadellidae leafhopper diagnostic plate',
-    tag: 'Cicadellidae Diagnostic Plate',
+    common: 'Leafhopper',
+    dedication: 'Named by Viraktamath & Webb',
   },
   Oryctopterus: {
-    src: '/media/web/specimens/plate-iso-head.webp',
-    alt: 'Cephalic focus-stack diagnostic series',
-    tag: 'Cephalic Focus Stack',
+    common: 'Jerusalem Cricket',
+    dedication: 'Named by Hiremath & Prathapan',
   },
   Axiagastus: {
-    src: '/media/web/specimens/plate-figure-1-types.webp',
-    alt: 'Holotype specimen anatomy and pygophore suite',
-    tag: 'Holotype Diagnostic Suite',
+    common: 'Shield Bug',
+    dedication: 'Named by Salini',
   },
 };
 
 /**
- * Eponymous Taxon Card — PDF Page 2
- * Eponymous Taxa with authentic specimen image viewports and high-contrast styling.
+ * Eponymous Taxon Card — PDF Page 1 revision
+ * Authentic typographic specimen accession card.
+ * Mismatched insect photographs are completely omitted per client instruction.
  */
 function EponymousCard({ taxon, index }: { taxon: EponymousTaxon; index: number }) {
-  const specimenImg = EPONYMOUS_IMAGES[taxon.genus];
+  const details = EPONYMOUS_DETAILS[taxon.genus];
 
   return (
     <article
@@ -71,36 +68,31 @@ function EponymousCard({ taxon, index }: { taxon: EponymousTaxon; index: number 
         </span>
       </header>
 
-      {/* Specimen Viewport Aperture displaying authentic specimen plates */}
-      <div className="relative my-4 w-full h-[180px] bg-void border border-rule/60 rounded-[2px] overflow-hidden group-hover:border-amber/60 transition-colors">
-        {specimenImg && (
-          <Image
-            src={specimenImg.src}
-            alt={specimenImg.alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover object-center opacity-70 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-void via-void/35 to-transparent pointer-events-none" />
-
-        {/* Optical graticule crosshairs */}
-        <div className="absolute inset-0 pointer-events-none opacity-25 group-hover:opacity-40 transition-opacity" aria-hidden="true">
+      {/* Specimen Viewport Aperture — Authentic museum-grade typographic cartouche */}
+      <div className="relative my-4 w-full h-[180px] bg-void/90 border border-rule/60 rounded-[2px] overflow-hidden flex flex-col items-center justify-center p-5 text-center group-hover:border-amber/50 transition-colors">
+        {/* Optical graticule crosshairs and reticle circle */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 group-hover:opacity-30 transition-opacity" aria-hidden="true">
           <div className="absolute left-1/2 top-0 bottom-0 w-px bg-amber/50 -translate-x-1/2" />
           <div className="absolute top-1/2 left-0 right-0 h-px bg-amber/50 -translate-y-1/2" />
           <div className="absolute inset-4 border border-rule/50 rounded-full" />
+          <div className="absolute inset-8 border border-amber/20 rounded-full" />
         </div>
 
-        {/* Specimen metadata tag overlay */}
-        <div className="absolute bottom-3 left-3 right-3 z-10">
+        {/* Specimen metadata overlay */}
+        <div className="relative z-10 space-y-1.5">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-amber font-semibold block">
+            {details?.common ?? 'Taxon Record'} · {taxon.family}
+          </span>
+
           <Binomial
             genus={taxon.genus}
             species={taxon.species}
-            className="block text-[#F7F5F0] text-[1.4rem] md:text-[1.55rem] leading-[1.1] tracking-[-0.02em] font-medium drop-shadow-md"
+            className="block text-[#F7F5F0] text-[1.55rem] md:text-[1.8rem] leading-[1.1] tracking-[-0.02em] font-medium"
           />
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-amber mt-1 block">
-            {specimenImg?.tag ?? 'Holotype Record'}
-          </span>
+
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-bone-dim pt-1">
+            {details?.dedication ?? 'Named in Honour'}
+          </p>
         </div>
       </div>
 

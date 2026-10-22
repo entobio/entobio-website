@@ -17,67 +17,17 @@ export const metadata: Metadata = {
   description: 'Insect biodiversity exhibitions, workshops, and school programmes. Live displays, 3D models, and field nature walks across Karnataka.',
 };
 
-const OUTREACH_GALLERY = [
-  {
-    src: '/media/web/outreach/exhibition-01-yesh7799.webp',
-    title: 'Curated Specimen Trays & Public Curiosity',
-    caption: 'School students exploring glass-topped entomological drawers of Scarabaeidae beetles and morphological diversity.',
-    tag: 'EXHIBITION',
-  },
-  {
-    src: '/media/web/outreach/exhibition-08-yesh8654.webp',
-    title: 'Batesian Mimicry & Iridescent Lepidoptera',
-    caption: 'Young visitor captivated by iridescent Morpho butterflies and protective mimicry displays.',
-    tag: 'MIMICRY & EVOLUTION',
-  },
-  {
-    src: '/media/web/outreach/exhibition-03-yesh7955.webp',
-    title: 'Micro-Observation with Magnifiers',
-    caption: 'Students using handheld magnifying lenses to inspect tiny tarsal and wing venation characters.',
-    tag: 'HANDS-ON',
-  },
-  {
-    src: '/media/web/outreach/exhibition-05-yesh8109.webp',
-    title: 'Scientific Art & Anatomical Sketches',
-    caption: 'Children proudly displaying their original insect drawings following a morphological art workshop.',
-    tag: 'STUDENT ART',
-  },
-  {
-    src: '/media/web/outreach/exhibition-02-yesh7918.webp',
-    title: 'Aquatic & Terrestrial Habitat Displays',
-    caption: 'Students studying mayfly and damselfly naiads and aquatic insect adaptations with bilingual scientific guides.',
-    tag: 'AQUATIC BIOLOGY',
-  },
-  {
-    src: '/media/web/outreach/exhibition-06-yesh8147.webp',
-    title: 'Living Insect Encounters',
-    caption: 'Direct gentle observation of living lepidopteran larvae demystifying insects for school children.',
-    tag: 'LIVE SPECIMENS',
-  },
-  {
-    src: '/media/web/outreach/exhibition-07-yesh8504.webp',
-    title: 'Field Logging & Vivarium Observation',
-    caption: 'Student recording behavioral observations in a field journal alongside a living specimen terrarium.',
-    tag: 'FIELD JOURNAL',
-  },
-  {
-    src: '/media/web/outreach/exhibition-09-yesh8722.webp',
-    title: '3D Educational Dioramas & Models',
-    caption: 'Creative 3D insect models and dioramas designed to spark playful curiosity and biological understanding.',
-    tag: '3D MODELS',
-  },
-  {
-    src: '/media/web/outreach/exhibition-04-yesh8054.webp',
-    title: 'Interactive Entomology Inquiry Board',
-    caption: 'Interactive riddle wall where students match ecological clues with actual pinned insect species.',
-    tag: 'INQUIRY BOARD',
-  },
-  {
-    src: '/media/web/outreach/exhibition-10-yesh9011.webp',
-    title: 'Public Exhibition Hall Overview',
-    caption: 'A bustling exhibition floor with families and students gathered around Orthoptera, Mantodea, and Neuroptera drawers.',
-    tag: 'PUBLIC IMPACT',
-  },
+const OUTREACH_PHOTOS = [
+  { src: '/media/web/outreach/exhibition-01-yesh7799.webp', alt: 'School students exploring curated insect specimen drawers' },
+  { src: '/media/web/outreach/exhibition-08-yesh8654.webp', alt: 'Young visitor viewing butterfly mimicry and lepidoptera displays' },
+  { src: '/media/web/outreach/exhibition-03-yesh7955.webp', alt: 'Students examining insect specimens with handheld magnifying lenses' },
+  { src: '/media/web/outreach/exhibition-05-yesh8109.webp', alt: 'Children displaying their original biological insect sketches' },
+  { src: '/media/web/outreach/exhibition-02-yesh7918.webp', alt: 'Students studying aquatic and terrestrial insect displays' },
+  { src: '/media/web/outreach/exhibition-06-yesh8147.webp', alt: 'Close observation of living insect specimen in classroom' },
+  { src: '/media/web/outreach/exhibition-07-yesh8504.webp', alt: 'Student recording behavioral observations at specimen terrarium' },
+  { src: '/media/web/outreach/exhibition-09-yesh8722.webp', alt: '3D educational models and dioramas designed for outreach' },
+  { src: '/media/web/outreach/exhibition-04-yesh8054.webp', alt: 'Interactive entomology inquiry wall and pinned specimens' },
+  { src: '/media/web/outreach/exhibition-10-yesh9011.webp', alt: 'Public biodiversity exhibition hall in Bengaluru' },
 ];
 
 export default function OutreachPage() {
@@ -169,38 +119,20 @@ export default function OutreachPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {OUTREACH_GALLERY.map((item, idx) => (
-              <figure
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {OUTREACH_PHOTOS.map((photo, idx) => (
+              <div
                 key={idx}
-                className="group relative flex flex-col bg-carbon/60 border border-rule hover:border-amber/60 rounded-[2px] overflow-hidden transition-all duration-300 shadow-lg"
+                className="group relative aspect-[3/2] w-full bg-void border border-rule hover:border-amber/70 rounded-[2px] overflow-hidden transition-all duration-300 shadow-lg"
               >
-                <div className="relative w-full aspect-[3/2] bg-void overflow-hidden">
-                  <Image
-                    src={item.src}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-void/80 backdrop-blur-sm border border-rule px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-amber font-semibold">
-                    {item.tag}
-                  </div>
-                </div>
-                <figcaption className="p-5 flex-1 flex flex-col justify-between border-t border-rule">
-                  <div>
-                    <h3 className="font-display text-[1.25rem] text-[#F7F5F0] mb-2 leading-snug">
-                      {item.title}
-                    </h3>
-                    <p className="font-body text-bone-dim text-[13px] leading-relaxed">
-                      {item.caption}
-                    </p>
-                  </div>
-                  <span className="font-mono text-[10px] text-bone-faint uppercase tracking-[0.14em] mt-4 block">
-                    ENTOBIO ARCHIVE ⌗ {String(idx + 1).padStart(2, '0')}
-                  </span>
-                </figcaption>
-              </figure>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
             ))}
           </div>
         </section>

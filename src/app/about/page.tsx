@@ -1,21 +1,20 @@
 /**
  * /about — Founder page
- * ARCHITECTURE.md §1, CONTENT.md §12–13
+ * Revised per client review: distinctions and honours removed.
  */
 
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { SITE } from '@/lib/site';
 import { COPY } from '@/content/copy';
-import { HONOURS } from '@/content/credentials';
 import { Footer } from '@/components/layout/Footer';
 import { breadcrumbSchema } from '@/lib/schema';
 
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'About Founder & Credentials',
-  description: `${SITE.founder} — Founder and Principal Consultant, ${SITE.name}. Fellow of the Royal Entomological Society, London.`,
+  title: 'About Founder · EntoBio Consult',
+  description: `${SITE.founder} — Founder and Principal Consultant, ${SITE.name}. Entomologist, independent researcher, taxonomy, biodiversity and scientific imaging.`,
 };
 
 export default function AboutPage() {
@@ -36,7 +35,7 @@ export default function AboutPage() {
         {/* Header */}
         <div className="mb-16 border-b border-rule pb-12">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4 font-semibold">
-            BIOGRAPHY & EXPERTISE
+            BIOGRAPHY &amp; EXPERTISE
           </p>
           <h1
             className="font-display text-bone mb-4"
@@ -63,7 +62,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Distinctions & Academic Honours with Field Research Imagery */}
+          {/* Field Research Imagery & Consultancy Column */}
           <div className="lg:col-span-5 space-y-6">
             {/* Field Observation Frame */}
             <div className="border border-rule bg-carbon/60 p-5 rounded-[2px] shadow-xl">
@@ -84,30 +83,14 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Distinctions & Honours */}
-            <div className="border border-rule/80 bg-carbon/60 p-8 rounded-[2px] space-y-6 shadow-xl">
-              <div>
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber font-semibold block mb-4">
-                  DISTINCTIONS &amp; HONOURS
-                </span>
-                <ul className="space-y-3 font-body text-[14px] text-bone">
-                  {HONOURS.map((honour) => (
-                    <li key={honour} className="flex items-start gap-2.5">
-                      <span className="text-amber mt-1 text-[12px]" aria-hidden="true">✦</span>
-                      <span className="leading-snug">{honour}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-t border-rule pt-6">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-bone-dim block mb-2">
-                  FOUNDER CONSULTANCY
-                </span>
-                <p className="font-body text-[13px] text-bone-dim leading-relaxed">
-                  Independent entomological consulting, taxonomy, and scientific imaging based in Bengaluru, India.
-                </p>
-              </div>
+            {/* Founder Consultancy Notice */}
+            <div className="border border-rule/80 bg-carbon/60 p-6 md:p-8 rounded-[2px] shadow-xl">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber font-semibold block mb-2">
+                FOUNDER CONSULTANCY
+              </span>
+              <p className="font-body text-[13.5px] text-[#D5D0C6] leading-relaxed">
+                Independent entomological consulting, taxonomy, and scientific imaging based in Bengaluru, India.
+              </p>
             </div>
           </div>
         </div>

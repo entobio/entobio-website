@@ -2,12 +2,11 @@
  * src/components/home/TheRecord.tsx
  * ACT 7 — THE RECORD — HOMEPAGE-BUILD-SPEC §9
  *
- * Back to --void. Quiet, factual, fast.
- * Three typographic columns from CONTENT.md §10 (INSTITUTIONS, JOURNALS, HONOURS). Type only, no logos.
+ * Three typographic columns (Research Focus & Taxa, Scientific Journals, Consulting Capabilities). Type only, no logos.
  * Strict heading hierarchy: h2 for section context, h3 for columns.
  */
 
-import { INSTITUTIONS, JOURNALS, HONOURS } from '@/content/credentials';
+import { JOURNALS } from '@/content/credentials';
 
 export function TheRecord() {
   return (
@@ -18,7 +17,7 @@ export function TheRecord() {
           07 — THE RECORD
         </p>
         <h2 className="sr-only">
-          The Record — Institutional Affiliations, Scientific Journals, and Honours
+          The Record — Research Focus, Scientific Journals, and Consulting Capabilities
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
@@ -50,17 +49,17 @@ export function TheRecord() {
             </ul>
           </div>
 
-          {/* Column 3: Honours */}
+          {/* Column 3: Consultancy & Practice */}
           <div className="flex flex-col md:border-l md:border-rule md:pl-10">
             <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber pb-4 border-b border-rule mb-6 font-semibold">
-              HONOURS &amp; DISTINCTIONS
+              CONSULTING CAPABILITIES
             </h3>
             <ul className="space-y-3 font-body text-[15px] text-[#E0DBD0]">
-              {HONOURS.map((honour) => (
-                <li key={honour} className="leading-snug">
-                  {honour}
-                </li>
-              ))}
+              <li className="leading-snug">Taxonomic Identification &amp; Description</li>
+              <li className="leading-snug">Publication-Grade Specimen Focus Stacking</li>
+              <li className="leading-snug">Institutional Collection Digitisation</li>
+              <li className="leading-snug">Biodiversity &amp; Pollinator Field Surveys</li>
+              <li className="leading-snug">Educational Outreach &amp; Science Workshops</li>
             </ul>
           </div>
         </div>

@@ -1,11 +1,10 @@
 /**
  * /merchandise — Entomological Merchandise, Field Tools & Educational Materials
- * Requested in client review (PDF Page 1)
+ * Revised per client review: strictly photographs, lapel pins, and posters. No insects sold.
  */
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Footer } from '@/components/layout/Footer';
 import { breadcrumbSchema } from '@/lib/schema';
@@ -13,77 +12,65 @@ import { breadcrumbSchema } from '@/lib/schema';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'Merchandise & Educational Tools · EntoBio Consult',
+  title: 'Photographs, Lapel Pins & Posters · EntoBio Consult',
   description:
-    'High-precision 3D insect models, taxonomic field keys, diagnostic prints, and specimen curation supplies by EntoBio Consult.',
+    'Archival focus-stacked specimen photographs, fine-art macro prints, collectible entomological lapel pins, and educational biodiversity wall posters by EntoBio Consult.',
 };
 
 const MERCHANDISE_ITEMS = [
   {
     id: 'MERCH-01',
-    category: 'EDUCATIONAL 3D MODELS',
-    title: 'Precision Anatomical Insect 3D Models',
-    image: '/media/web/outreach/exhibition-09-yesh8722.webp',
-    imageAlt: 'Tactile 3D insect models and diorama displays',
+    category: 'SCIENTIFIC PHOTOGRAPHS',
+    title: 'Focus-Stacked Diagnostic Specimen Prints',
     description:
-      'High-detail tactile 3D printed morphology models designed for university labs, classrooms, and exhibitions. Accurately scaled diagnostic features including mouthparts, wing venation, and genitalia.',
-    specs: 'Scale: 15:1 to 50:1 · Eco-friendly photopolymer resin · Scientific calibration guide included',
-    status: 'Available on Order',
+      'Archival gallery prints of landmark type specimens and intricate insect morphology. Captured using extreme macro focus-stacking at up to 400× magnification on fine-art archival paper.',
+    specs: 'Sizes: A3, A2 & Custom · 310 gsm 100% cotton rag · Annotated with specimen accession data',
+    status: 'Archival Editions',
   },
   {
     id: 'MERCH-02',
-    category: 'TAXONOMIC PUBLICATIONS',
-    title: 'Indian Insects: Diversity and Science',
-    image: null,
-    imageAlt: '',
+    category: 'FIELD MACRO PHOTOGRAPHY',
+    title: 'Living Insect Field Habitat Prints',
     description:
-      'Co-edited authoritative volume covering the vast entomological diversity of India, classification keys, biogeography, and ecological roles. 450+ pages published with CRC Press.',
-    specs: 'Hardcover & Institutional eBook · ISBN 9780367184131 · Academic reference',
-    status: 'In Print',
+      'Fine-art exhibition prints of living Miridae, native pollinators, and cryptic canopy species in their natural microhabitats across the Western Ghats and Andaman Archipelago.',
+    specs: 'Giclée pigment prints · Acid-free archival mounting · Custom gallery framing options',
+    status: 'Limited Prints',
   },
   {
     id: 'MERCH-03',
-    category: 'SCIENTIFIC PRINTS',
-    title: 'Focus-Stacked Diagnostic Macro Plates',
-    image: '/media/web/specimens/plate-iso-head.webp',
-    imageAlt: 'Archival focus-stacked cephalic morphology print',
+    category: 'ENTOMOLOGICAL LAPEL PINS',
+    title: 'Native Pollinators Enamel Lapel Pin Set',
     description:
-      'Archival gallery prints of landmark holotypes and remarkable insect morphology. Imaged with extreme macro focus-stacking at up to 400× magnification on fine-art archival paper.',
-    specs: 'Sizes: A3, A2 & Bespoke · 310 gsm cotton rag · Signed & annotated with specimen accession',
-    status: 'Limited Editions',
+      'Artistic collectible hard-enamel lapel pins celebrating Indian wild bees, predatory bugs, and beneficial pollinators. Features anatomically accurate silhouettes and rich jewel-toned enamels.',
+    specs: 'Hard enamel with gold plating · Double rubber clutch backing · Illustrated backing card',
+    status: 'Available on Order',
   },
   {
     id: 'MERCH-04',
-    category: 'FIELD & CURATION TOOLS',
-    title: 'Entomological Field & Microscopy Kit',
-    image: null,
-    imageAlt: '',
+    category: 'ENTOMOLOGICAL LAPEL PINS',
+    title: 'Iconic Beetles & True Bugs Lapel Pins',
     description:
-      'Curated field tools for taxonomic field surveys and specimen preservation: high-precision stainless steel entomological forceps, specimen unit trays, calibrated aspirators, and field storage vials.',
-    specs: 'Standard museum curation grade · Suitable for researchers, survey teams, and students',
-    status: 'Institutional Supply',
+      'Precision-crafted metal lapel pins showcasing iridescent jewel beetles and distinctive shield bugs. Perfect for scientific conferences, field bags, and nature enthusiasts.',
+    specs: 'Die-struck brass alloy · Polished nickel & copper finishes · Collector edition presentation',
+    status: 'In Stock / Bundles',
   },
   {
     id: 'MERCH-05',
-    category: 'EDUCATIONAL AIDS',
-    title: 'Biodiversity Identification Pocket Guides',
-    image: '/media/web/field/img_6704.webp',
-    imageAlt: 'Microhabitat field photograph of living Miridae',
+    category: 'EDUCATIONAL POSTERS',
+    title: 'Indian Insect Biodiversity Wall Chart',
     description:
-      'Laminated field-identification charts and visual dichotomous keys for common pollinators, agricultural pests, and predatory bugs of the Indian subcontinent.',
-    specs: 'Weatherproof UV-coated sheets · Illustrated with diagnostic field photography',
-    status: 'School & Workshop Bundles',
+      'Comprehensive educational wall poster illustrating major insect orders, morphological adaptations, and ecological roles across Indian biogeographic zones.',
+    specs: '24" × 36" (60 × 90 cm) · 250 gsm satin art card · Matte laminated for durability',
+    status: 'School & University Supply',
   },
   {
     id: 'MERCH-06',
-    category: 'COLLECTION CARE',
-    title: 'Museum Preservation & Curation Supplies',
-    image: '/media/web/outreach/exhibition-01-yesh7799.webp',
-    imageAlt: 'Museum insect drawers with pinned specimens',
+    category: 'EDUCATIONAL POSTERS',
+    title: 'Taxonomic Anatomy & Focus-Stacking Infographic',
     description:
-      'Archival-grade insect pins (sizes 000 through 5), museum storage boxes with polyethylene foam bottoms, and micro-vial genitalia storage kits.',
-    specs: 'Acid-free, rust-resistant materials complying with international museum standards',
-    status: 'Bulk & Institutional Order',
+      'High-detail laboratory reference poster detailing insect mouthparts, wing venation, and the optical principles of microscopic focus-stacking.',
+    specs: '18" × 24" (45 × 60 cm) · UV-coated weatherproof stock · Classroom & laboratory reference',
+    status: 'Workshop & Lab Supply',
   },
 ];
 
@@ -106,7 +93,7 @@ export default function MerchandisePage() {
         {/* Page Header */}
         <div className="mb-16 border-b border-rule pb-12 max-w-[880px]">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-4 font-semibold">
-            SCIENTIFIC REQUISITES &amp; EDUCATIONAL MATERIALS
+            PHOTOGRAPHS, LAPEL PINS &amp; EDUCATIONAL POSTERS
           </p>
           <h1
             className="font-display text-[#F7F5F0] mb-6"
@@ -119,9 +106,9 @@ export default function MerchandisePage() {
             Merchandise &amp; Gear
           </h1>
           <p className="font-body text-[#D5D0C6] text-[17px] leading-relaxed">
-            Curated 3D anatomical models, authoritative reference texts, fine-art macro prints,
-            and museum-grade entomological field equipment designed for researchers, academic institutions,
-            and nature educators.
+            Archival focus-stacked specimen photographs, fine-art macro prints, collectible entomological
+            lapel pins, and educational biodiversity wall posters. Designed for researchers, universities,
+            nature educators, and biodiversity enthusiasts.
           </p>
         </div>
 
@@ -130,58 +117,43 @@ export default function MerchandisePage() {
           {MERCHANDISE_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="border border-rule bg-carbon/60 rounded-[2px] flex flex-col justify-between hover:border-amber/60 hover:bg-carbon transition-all duration-300 group shadow-lg overflow-hidden"
+              className="border border-rule bg-carbon/60 rounded-[2px] p-8 flex flex-col justify-between hover:border-amber/60 hover:bg-carbon transition-all duration-300 group shadow-lg"
             >
-              {item.image && (
-                <div className="relative w-full h-[180px] bg-void overflow-hidden border-b border-rule">
-                  <Image
-                    src={item.image}
-                    alt={item.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-carbon via-transparent to-transparent pointer-events-none" />
-                </div>
-              )}
-
-              <div className="p-8 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-rule mb-5">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber font-semibold">
-                      {item.category}
-                    </span>
-                    <span className="font-mono text-[11px] tracking-[0.16em] text-bone-faint">
-                      {item.id}
-                    </span>
-                  </div>
-
-                  <h3 className="font-display text-[1.65rem] text-[#F7F5F0] leading-snug group-hover:text-amber transition-colors mb-3">
-                    {item.title}
-                  </h3>
-
-                  <p className="font-body text-bone-dim text-[14px] leading-relaxed mb-6">
-                    {item.description}
-                  </p>
+              <div>
+                <div className="flex items-center justify-between pb-4 border-b border-rule mb-5">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber font-semibold">
+                    {item.category}
+                  </span>
+                  <span className="font-mono text-[11px] tracking-[0.16em] text-bone-faint">
+                    {item.id}
+                  </span>
                 </div>
 
-                <div className="pt-4 border-t border-rule space-y-4">
-                  <p className="font-mono text-[11px] text-bone-faint leading-tight">
-                    {item.specs}
-                  </p>
+                <h3 className="font-display text-[1.65rem] text-[#F7F5F0] leading-snug group-hover:text-amber transition-colors mb-3">
+                  {item.title}
+                </h3>
 
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber/90 font-medium">
-                      {item.status}
-                    </span>
-                    <Link
-                      href={`/contact?subject=${encodeURIComponent(`Inquiry: ${item.title}`)}`}
-                      className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-[#F7F5F0] hover:text-amber transition-colors"
-                    >
-                      <span>Request Details</span>
-                      <span aria-hidden="true">&rarr;</span>
-                    </Link>
-                  </div>
+                <p className="font-body text-bone-dim text-[14px] leading-relaxed mb-6">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-rule space-y-4">
+                <p className="font-mono text-[11px] text-bone-faint leading-tight">
+                  {item.specs}
+                </p>
+
+                <div className="flex items-center justify-between pt-2">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber/90 font-medium">
+                    {item.status}
+                  </span>
+                  <Link
+                    href={`/contact?subject=${encodeURIComponent(`Inquiry: ${item.title}`)}`}
+                    className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-[#F7F5F0] hover:text-amber transition-colors"
+                  >
+                    <span>Request Details</span>
+                    <span aria-hidden="true">&rarr;</span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -192,14 +164,15 @@ export default function MerchandisePage() {
         <div className="border border-amber/40 bg-carbon/50 p-8 md:p-12 rounded-[2px] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl">
           <div className="lg:col-span-8">
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber font-semibold block mb-2">
-              INSTITUTIONAL &amp; WORKSHOP ORDERS
+              CUSTOM PRINTS, POSTERS &amp; LAPEL PINS
             </span>
             <h2 className="font-display text-[2rem] md:text-[2.6rem] text-bone mb-3 leading-tight">
-              Looking for tailored educational models or bulk specimens?
+              Looking for bespoke prints, educational posters, or pin batches?
             </h2>
             <p className="font-body text-[#D5D0C6] text-[15px] max-w-[650px] leading-relaxed">
-              We fabricate bespoke 3D biological models for museums, university faculties, and exhibitions.
-              Contact us to discuss custom magnifications, curriculum integration, or institutional supply.
+              We provide custom-framed fine-art macro photographs, tailored classroom posters, and
+              institutional enamel pin batches for academic departments, conservation societies, and nature festivals.
+              All merchandise is strictly educational and non-specimen.
             </p>
           </div>
           <div className="lg:col-span-4 flex lg:justify-end">
